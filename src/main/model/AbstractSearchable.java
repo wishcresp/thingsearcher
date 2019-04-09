@@ -5,10 +5,11 @@ import java.util.List;
 
 public abstract class AbstractSearchable implements Searchable {
     
-    private final String name;
+    String ATTRIBUTE_COUNT_EXCEPTION_MESSAGE = "Error: The number of provided attributes is wrong";
     List<Enum> attributes = new ArrayList<>();
+    private final String name;
     
-    public AbstractSearchable(String name) {
+    AbstractSearchable(String name) {
         this.name = name;
     }
     
@@ -16,14 +17,15 @@ public abstract class AbstractSearchable implements Searchable {
         this.name = UNKNOWN;
     }
     
+    List<Enum> getAttributes() {
+        return this.attributes;
+    }
+    
     public String getName() {
         return this.name;
     }
     
-    public List<Enum> getAttributes() {
-        return this.attributes;
-    }
+    public abstract int getAttributeCount();
     
-    abstract int getAttributeCount();
-    
+    public abstract int getNumberOfMatches(List<Enum> attributes) throws AttributeCountException;
 }
