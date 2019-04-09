@@ -4,15 +4,29 @@ import java.util.List;
 
 public class AnimalSearchable extends AbstractSearchable {
     
-    AnimalSearchable(Attributes.Legs numOfLegs, Attributes.Feature hasWings, Attributes.Feature canFly, Attributes.Feature hasTail,
-                     Attributes.Domestication domesticated, Attributes.Habitat habitat, Attributes.Active active) {
+    public AnimalSearchable(String name, Types.Legs numOfLegs, Types.Feature hasWings, Types.Feature canFly, Types.Feature hasTail,
+                            Types.Domestication domesticated, Types.Habitat habitat, Types.Active active) {
+        super(name);
         this.attributes.add(numOfLegs);
         this.attributes.add(hasWings);
         this.attributes.add(canFly);
         this.attributes.add(hasTail);
         this.attributes.add(domesticated);
-        attributes.add(habitat);
-        attributes.add(active);
+        this.attributes.add(habitat);
+        this.attributes.add(active);
+    }
+    
+    // Decided to not overload this constructor so UNKNOWN name is handled by the AbstractSearchable constructor instead
+    public AnimalSearchable(Types.Legs numOfLegs, Types.Feature hasWings, Types.Feature canFly, Types.Feature hasTail,
+                            Types.Domestication domesticated, Types.Habitat habitat, Types.Active active) {
+        // this(UNKNOWN, numOfLegs, hasWings, canFly, hasTail, domesticated, habitat, active);
+        this.attributes.add(numOfLegs);
+        this.attributes.add(hasWings);
+        this.attributes.add(canFly);
+        this.attributes.add(hasTail);
+        this.attributes.add(domesticated);
+        this.attributes.add(habitat);
+        this.attributes.add(active);
     }
     
     public Enum getNumOfLegs() {
@@ -65,7 +79,7 @@ public class AnimalSearchable extends AbstractSearchable {
     }
     
     @Override
-    int getAttributeCount() {
+    public int getAttributeCount() {
         return this.attributes.size();
     }
     
