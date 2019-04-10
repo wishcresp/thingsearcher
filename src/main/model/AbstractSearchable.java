@@ -17,7 +17,7 @@ public abstract class AbstractSearchable implements Searchable {
         this.name = UNKNOWN;
     }
     
-    List<Enum> getAttributes() {
+    public List<Enum> getAttributes() {
         return this.attributes;
     }
     
