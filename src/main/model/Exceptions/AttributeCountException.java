@@ -1,4 +1,4 @@
-package main.model;
+package main.model.Exceptions;
 
 public class AttributeCountException extends Exception {
     

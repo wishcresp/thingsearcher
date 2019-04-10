@@ -1,5 +1,7 @@
 package main.model;
 
+import main.model.Exceptions.AttributeCountException;
+
 import java.util.ArrayList;
 import java.util.List;
 

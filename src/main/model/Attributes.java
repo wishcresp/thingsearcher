@@ -1,6 +1,6 @@
 package main.model;
 
-public class Types {
+public class Attributes {
     
     public enum Feature {
         UNKNOWN,

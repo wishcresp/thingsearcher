@@ -2,22 +2,22 @@ package main.model;
 
 public class AnimalSearchableBuilder {
     
-    private Types.Legs numOfLegs;
-    private Types.Feature hasWings;
-    private Types.Feature canFly;
-    private Types.Feature hasTail;
-    private Types.Nature nature;
-    private Types.Habitat habitat;
-    private Types.Active active;
+    private Attributes.Legs numOfLegs;
+    private Attributes.Feature hasWings;
+    private Attributes.Feature canFly;
+    private Attributes.Feature hasTail;
+    private Attributes.Nature nature;
+    private Attributes.Habitat habitat;
+    private Attributes.Active active;
     
     public AnimalSearchableBuilder() {
-        this.numOfLegs = Types.Legs.UNKNOWN;
-        this.hasWings = Types.Feature.UNKNOWN;
-        this.canFly = Types.Feature.UNKNOWN;
-        this.hasTail = Types.Feature.UNKNOWN;
-        this.nature = Types.Nature.UNKNOWN;
-        this.habitat = Types.Habitat.UNKNOWN;
-        this.active = Types.Active.UNKNOWN;
+        this.numOfLegs = Attributes.Legs.UNKNOWN;
+        this.hasWings = Attributes.Feature.UNKNOWN;
+        this.canFly = Attributes.Feature.UNKNOWN;
+        this.hasTail = Attributes.Feature.UNKNOWN;
+        this.nature = Attributes.Nature.UNKNOWN;
+        this.habitat = Attributes.Habitat.UNKNOWN;
+        this.active = Attributes.Active.UNKNOWN;
     }
     
     public AnimalSearchable build() {
@@ -25,37 +25,37 @@ public class AnimalSearchableBuilder {
                 this.habitat, this.active);
     }
     
-    public AnimalSearchableBuilder numOfLegs(Types.Legs numOfLegs) {
+    public AnimalSearchableBuilder numOfLegs(Attributes.Legs numOfLegs) {
         this.numOfLegs = numOfLegs;
         return this;
     }
 
-    public AnimalSearchableBuilder hasWings(Types.Feature hasWings) {
+    public AnimalSearchableBuilder hasWings(Attributes.Feature hasWings) {
         this.hasWings = hasWings;
         return this;
     }
     
-    public AnimalSearchableBuilder canFly(Types.Feature canFly) {
+    public AnimalSearchableBuilder canFly(Attributes.Feature canFly) {
         this.canFly = canFly;
         return this;
     }
     
-    public AnimalSearchableBuilder hasTail(Types.Feature hasTail) {
+    public AnimalSearchableBuilder hasTail(Attributes.Feature hasTail) {
         this.hasTail = hasTail;
         return this;
     }
     
-    public AnimalSearchableBuilder nature(Types.Nature nature) {
+    public AnimalSearchableBuilder nature(Attributes.Nature nature) {
         this.nature = nature;
         return this;
     }
     
-    public AnimalSearchableBuilder habitat(Types.Habitat habitat) {
+    public AnimalSearchableBuilder habitat(Attributes.Habitat habitat) {
         this.habitat = habitat;
         return this;
     }
     
-    public AnimalSearchableBuilder active(Types.Active active) {
+    public AnimalSearchableBuilder active(Attributes.Active active) {
         this.active = active;
         return this;
     }

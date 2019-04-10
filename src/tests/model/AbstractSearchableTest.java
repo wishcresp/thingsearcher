@@ -1,7 +1,7 @@
 package tests.model;
 
 import main.model.AnimalSearchable;
-import main.model.Types;
+import main.model.Attributes;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,18 +23,18 @@ class AbstractSearchableTest {
     static void setup() {
         name = "TestAnimal";
         initializeAttributes();
-        searchable = new AnimalSearchable(name, Types.Legs.UNKNOWN, Types.Feature.UNKNOWN, Types.Feature.UNKNOWN, Types.Feature.UNKNOWN,
-                Types.Nature.UNKNOWN, Types.Habitat.UNKNOWN, Types.Active.UNKNOWN);
+        searchable = new AnimalSearchable(name, Attributes.Legs.UNKNOWN, Attributes.Feature.UNKNOWN, Attributes.Feature.UNKNOWN, Attributes.Feature.UNKNOWN,
+                Attributes.Nature.UNKNOWN, Attributes.Habitat.UNKNOWN, Attributes.Active.UNKNOWN);
     }
     
     private static void initializeAttributes() {
-        attributes.add(Types.Legs.UNKNOWN);
-        attributes.add(Types.Feature.UNKNOWN);
-        attributes.add(Types.Feature.UNKNOWN);
-        attributes.add(Types.Feature.UNKNOWN);
-        attributes.add(Types.Nature.UNKNOWN);
-        attributes.add(Types.Habitat.UNKNOWN);
-        attributes.add(Types.Active.UNKNOWN);
+        attributes.add(Attributes.Legs.UNKNOWN);
+        attributes.add(Attributes.Feature.UNKNOWN);
+        attributes.add(Attributes.Feature.UNKNOWN);
+        attributes.add(Attributes.Feature.UNKNOWN);
+        attributes.add(Attributes.Nature.UNKNOWN);
+        attributes.add(Attributes.Habitat.UNKNOWN);
+        attributes.add(Attributes.Active.UNKNOWN);
     }
     
     @Test
@@ -46,8 +46,8 @@ class AbstractSearchableTest {
     @Test
     @DisplayName("UNKNOWN name is expected")
     void getUnknownNameTest() {
-        AnimalSearchable unknownSearchable = new AnimalSearchable(Types.Legs.UNKNOWN, Types.Feature.UNKNOWN, Types.Feature.UNKNOWN, Types.Feature.UNKNOWN,
-                Types.Nature.UNKNOWN, Types.Habitat.UNKNOWN, Types.Active.UNKNOWN);
+        AnimalSearchable unknownSearchable = new AnimalSearchable(Attributes.Legs.UNKNOWN, Attributes.Feature.UNKNOWN, Attributes.Feature.UNKNOWN, Attributes.Feature.UNKNOWN,
+                Attributes.Nature.UNKNOWN, Attributes.Habitat.UNKNOWN, Attributes.Active.UNKNOWN);
         assertEquals(unknownSearchable.getName(), unknownSearchable.UNKNOWN);
     }
     

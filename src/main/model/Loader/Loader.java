@@ -2,7 +2,7 @@ package main.model.Loader;
 
 import main.model.AnimalSearchable;
 import main.model.Searchable;
-import main.model.Types;
+import main.model.Attributes;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -21,9 +21,9 @@ public class Loader {
             
             while ((line = bufferedReader.readLine()) != null) {
                 tokens = line.split(",");
-                animalSearchables.add(new AnimalSearchable(tokens[0], Types.Legs.valueOf(tokens[1]),
-                        Types.Feature.valueOf(tokens[2]), Types.Feature.valueOf(tokens[3]), Types.Feature.valueOf(tokens[4]),
-                        Types.Nature.valueOf(tokens[5]), Types.Habitat.valueOf(tokens[6]), Types.Active.valueOf(tokens[7])));
+                animalSearchables.add(new AnimalSearchable(tokens[0], Attributes.Legs.valueOf(tokens[1]),
+                        Attributes.Feature.valueOf(tokens[2]), Attributes.Feature.valueOf(tokens[3]), Attributes.Feature.valueOf(tokens[4]),
+                        Attributes.Nature.valueOf(tokens[5]), Attributes.Habitat.valueOf(tokens[6]), Attributes.Active.valueOf(tokens[7])));
             }
             bufferedReader.close();
         } catch (Exception e) {
