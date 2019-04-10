@@ -37,6 +37,11 @@ public class Model {
      * @throws AttributeCountException The number of the supplied attributes was wrong for the searchable type
      */
     public String search(List<Enum> attributes) throws AttributeCountException {
+        // Check for null values in search
+        if (attributes.contains(null)) {
+            throw new AttributeCountException("A provided attribute was null");
+        }
+        
         Searchable searchResult = null;
         int maxAttributeMatches = 0;
         // Compare query with each searchable
