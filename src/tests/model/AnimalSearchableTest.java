@@ -1,28 +1,26 @@
 package tests.model;
 
 import main.model.AnimalSearchable;
-import main.model.Exceptions.AttributeCountException;
 import main.model.Attributes;
+import main.model.Exceptions.AttributeCountException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.w3c.dom.Attr;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("AnimalSearchable test")
 class AnimalSearchableTest {
     
     private static AnimalSearchable searchable;
-    private static List<Enum> attributes = new ArrayList<>();
+    private static List<Enum> attributes;
     
     @BeforeAll
     static void setup() {
+        attributes = new ArrayList<>();
         initializeAttributes();
         searchable = new AnimalSearchable(Attributes.Legs.FOUR, Attributes.Feature.NO, Attributes.Feature.NO, Attributes.Feature.YES,
                 Attributes.Nature.DOMESTICATED, Attributes.Habitat.TERRESTRIAL, Attributes.Active.DIURNAL);

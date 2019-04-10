@@ -17,7 +17,7 @@ public class Model {
         loadSearchables();
     }
     
-    public void loadSearchables() {
+    private void loadSearchables() {
         searchables.addAll(Loader.loadAnimals(ANIMAL_DATA_FILE_NAME));
         // TODO: Load additional types of searchables in the future
     }
