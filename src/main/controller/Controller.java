@@ -1,13 +1,9 @@
 package main.controller;
 
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import main.model.Attributes;
 import main.model.Exceptions.AttributeCountException;
 import main.model.Model;
@@ -87,7 +83,8 @@ public class Controller implements Initializable {
             try {
                 resultField.setText(model.search(attributes));
             } catch (AttributeCountException e) {
-                e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.CLOSE);
+                alert.showAndWait();
             }
         });
     }
