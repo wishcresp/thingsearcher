@@ -22,9 +22,9 @@ class AbstractSearchableTest {
     @BeforeAll
     static void setup() {
         name = "TestAnimal";
+        initializeAttributes();
         searchable = new AnimalSearchable(name, Types.Legs.UNKNOWN, Types.Feature.UNKNOWN, Types.Feature.UNKNOWN, Types.Feature.UNKNOWN,
                 Types.Domestication.UNKNOWN, Types.Habitat.UNKNOWN, Types.Active.UNKNOWN);
-        initializeAttributes();
     }
     
     private static void initializeAttributes() {
@@ -35,7 +35,6 @@ class AbstractSearchableTest {
         attributes.add(Types.Domestication.UNKNOWN);
         attributes.add(Types.Habitat.UNKNOWN);
         attributes.add(Types.Active.UNKNOWN);
-        
     }
     
     @Test
