@@ -5,7 +5,8 @@ public class Types {
     public enum Feature {
         UNKNOWN,
         YES,
-        NO
+        NO,
+        BOTH
     }
     
     public enum Legs {
