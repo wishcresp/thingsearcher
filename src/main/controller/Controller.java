@@ -1,6 +1,8 @@
 package main.controller;
 
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -20,6 +22,9 @@ public class Controller implements Initializable {
     public void setModel(Model model) {
         this.model = model;
     }
+    
+    @FXML // fx:id="menuReset"
+    private MenuItem menuReset;
     
     @FXML // fx:id="legsCombo"
     private ComboBox<Enum> legsCombo;
@@ -58,15 +63,14 @@ public class Controller implements Initializable {
         natureCombo.setItems(FXCollections.observableArrayList(Attributes.Nature.values()));
         habitatCombo.setItems(FXCollections.observableArrayList(Attributes.Habitat.values()));
         activeCombo.setItems(FXCollections.observableArrayList(Attributes.Active.values()));
-    
-        // Default selected items
-        legsCombo.getSelectionModel().select(0);
-        wingsCombo.getSelectionModel().select(0);
-        flyCombo.getSelectionModel().select(0);
-        tailCombo.getSelectionModel().select(0);
-        natureCombo.getSelectionModel().select(0);
-        habitatCombo.getSelectionModel().select(0);
-        activeCombo.getSelectionModel().select(0);
+        
+        selectDefaultComboBoxItems();
+        
+        // Add listener to menu item
+        menuReset.setOnAction(event -> {
+            selectDefaultComboBoxItems();
+            resultField.setText("");
+        });
         
         // Add listener to button
         searchButton.setOnAction(event -> {
@@ -87,5 +91,15 @@ public class Controller implements Initializable {
                 alert.showAndWait();
             }
         });
+    }
+    
+    private void selectDefaultComboBoxItems() {
+        legsCombo.getSelectionModel().select(0);
+        wingsCombo.getSelectionModel().select(0);
+        flyCombo.getSelectionModel().select(0);
+        tailCombo.getSelectionModel().select(0);
+        natureCombo.getSelectionModel().select(0);
+        habitatCombo.getSelectionModel().select(0);
+        activeCombo.getSelectionModel().select(0);
     }
 }

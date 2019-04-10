@@ -20,33 +20,7 @@
 <VBox prefHeight="376.0" prefWidth="561.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.controller.Controller">
     <MenuBar VBox.vgrow="NEVER">
         <Menu mnemonicParsing="false" text="File">
-            <MenuItem mnemonicParsing="false" text="New" />
-            <MenuItem mnemonicParsing="false" text="Open…" />
-            <Menu mnemonicParsing="false" text="Open Recent" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Close" />
-            <MenuItem mnemonicParsing="false" text="Save" />
-            <MenuItem mnemonicParsing="false" text="Save As…" />
-            <MenuItem mnemonicParsing="false" text="Revert" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Preferences…" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Quit" />
-        </Menu>
-        <Menu mnemonicParsing="false" text="Edit">
-            <MenuItem mnemonicParsing="false" text="Undo" />
-            <MenuItem mnemonicParsing="false" text="Redo" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Cut" />
-            <MenuItem mnemonicParsing="false" text="Copy" />
-            <MenuItem mnemonicParsing="false" text="Paste" />
-            <MenuItem mnemonicParsing="false" text="Delete" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Select All" />
-            <MenuItem mnemonicParsing="false" text="Unselect All" />
-        </Menu>
-        <Menu mnemonicParsing="false" text="Help">
-            <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
+            <MenuItem fx:id="menuReset" mnemonicParsing="false" text="Reset" />
         </Menu>
     </MenuBar>
     <BorderPane>
