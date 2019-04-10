@@ -1,7 +1,6 @@
 package main.model;
 
 import main.model.Exceptions.AttributeCountException;
-import main.model.Exceptions.NoMatchException;
 import main.model.Loader.Loader;
 
 import java.util.ArrayList;
@@ -10,6 +9,7 @@ import java.util.List;
 public class Model {
     
     private final String ANIMAL_DATA_FILE_NAME = "res/animals.txt";
+    private final String MATCH_NOT_FOUND = "No matches were found.";
     private List<Searchable> searchables;
     
     public Model() {
@@ -35,24 +35,20 @@ public class Model {
      * @param attributes List of enum attributes of a search query
      * @return The name of the closest matching searchable
      * @throws AttributeCountException The number of the supplied attributes was wrong for the searchable type
-     * @throws NoMatchException No match could be found (0 matching attributes or empty list)
      */
-    public String search(List<Enum> attributes) throws AttributeCountException, NoMatchException {
-        Searchable result = null;
+    public String search(List<Enum> attributes) throws AttributeCountException {
+        Searchable searchResult = null;
         int maxAttributeMatches = 0;
         // Compare query with each searchable
         for (Searchable searchable : this.searchables) {
             int attributeMatches = searchable.getNumberOfMatches(attributes);
             // Check if more of a match than previous matches (NO_MATCH = -1 so is never considered)
             if (attributeMatches > maxAttributeMatches) {
-                result = searchable;
+                searchResult = searchable;
                 maxAttributeMatches = attributeMatches;
             }
         }
-        
-        if (result == null)
-            throw new NoMatchException("No matches were found!");
-        
-        return result.getName();
+        // Return name of search result of error message if no result found
+        return searchResult != null ? searchResult.getName() : MATCH_NOT_FOUND;
     }
 }
