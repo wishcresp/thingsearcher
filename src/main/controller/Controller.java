@@ -55,6 +55,7 @@ public class Controller implements Initializable {
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        // Populate Combo boxes
         legsCombo.setItems(FXCollections.observableArrayList(Attributes.Legs.values()));
         wingsCombo.setItems(FXCollections.observableArrayList(Attributes.Feature.values()));
         flyCombo.setItems(FXCollections.observableArrayList(Attributes.Feature.values()));
@@ -62,8 +63,19 @@ public class Controller implements Initializable {
         natureCombo.setItems(FXCollections.observableArrayList(Attributes.Nature.values()));
         habitatCombo.setItems(FXCollections.observableArrayList(Attributes.Habitat.values()));
         activeCombo.setItems(FXCollections.observableArrayList(Attributes.Active.values()));
+    
+        // Default selected items
+        legsCombo.getSelectionModel().select(0);
+        wingsCombo.getSelectionModel().select(0);
+        flyCombo.getSelectionModel().select(0);
+        tailCombo.getSelectionModel().select(0);
+        natureCombo.getSelectionModel().select(0);
+        habitatCombo.getSelectionModel().select(0);
+        activeCombo.getSelectionModel().select(0);
         
+        // Add listener to button
         searchButton.setOnAction(event -> {
+            // Build attributes search query
             List<Enum> attributes = new ArrayList<>();
             attributes.add(legsCombo.getSelectionModel().getSelectedItem());
             attributes.add(wingsCombo.getSelectionModel().getSelectedItem());
