@@ -24,7 +24,7 @@ class AnimalSearchableTest {
     static void setup() {
         initializeAttributes();
         searchable = new AnimalSearchable(Types.Legs.FOUR, Types.Feature.NO, Types.Feature.NO, Types.Feature.YES,
-                Types.Domestication.DOMESTICATED, Types.Habitat.TERRESTRIAL, Types.Active.DIURNAL);
+                Types.Nature.DOMESTICATED, Types.Habitat.TERRESTRIAL, Types.Active.DIURNAL);
         
     }
     
@@ -34,7 +34,7 @@ class AnimalSearchableTest {
         attributes.add(Types.Feature.NO);
         attributes.add(Types.Feature.NO);
         attributes.add(Types.Feature.YES);
-        attributes.add(Types.Domestication.DOMESTICATED);
+        attributes.add(Types.Nature.DOMESTICATED);
         attributes.add(Types.Habitat.TERRESTRIAL);
         attributes.add(Types.Active.DIURNAL);
     }

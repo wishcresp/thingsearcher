@@ -30,7 +30,7 @@ public class Types {
         AQUATIC
     }
     
-    public enum Domestication {
+    public enum Nature {
         UNKNOWN,
         WILD,
         DOMESTICATED,
