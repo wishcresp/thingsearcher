@@ -10,7 +10,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import main.model.Attributes;
 import main.model.Exceptions.AttributeCountException;
-import main.model.Exceptions.NoMatchException;
 import main.model.Model;
 
 import java.net.URL;
@@ -85,13 +84,11 @@ public class Controller implements Initializable {
             attributes.add(habitatCombo.getSelectionModel().getSelectedItem());
             attributes.add(activeCombo.getSelectionModel().getSelectedItem());
             
-            String result = "No matches";
             try {
-                result = model.search(attributes);
-            } catch (AttributeCountException | NoMatchException e) {
+                resultField.setText(model.search(attributes));
+            } catch (AttributeCountException e) {
                 e.printStackTrace();
             }
-            resultField.setText(result);
         });
     }
 }
