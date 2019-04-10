@@ -9,7 +9,8 @@ import java.util.List;
 public class Model {
     
     private final String ANIMAL_DATA_FILE_NAME = "res/animals.txt";
-    private final String MATCH_NOT_FOUND = "No matches were found.";
+    private final String RESULT_MESSAGE = "Is it an ";
+    private final String MATCH_NOT_FOUND_MESSAGE = "No matches were found.";
     private List<Searchable> searchables;
     
     public Model() {
@@ -31,9 +32,9 @@ public class Model {
     }
     
     /**
-     * Returns the name of the closest matching searchable for a list of attributes search query
+     * Returns a formatted message of the closest matching searchable for a list of attributes search query
      * @param attributes List of enum attributes of a search query
-     * @return The name of the closest matching searchable
+     * @return Message containing found result or not found message
      * @throws AttributeCountException The number of the supplied attributes was wrong for the searchable type
      */
     public String search(List<Enum> attributes) throws AttributeCountException {
@@ -54,6 +55,6 @@ public class Model {
             }
         }
         // Return name of search result of error message if no result found
-        return searchResult != null ? searchResult.getName() : MATCH_NOT_FOUND;
+        return searchResult != null ? (RESULT_MESSAGE + searchResult.getName() + "?") : MATCH_NOT_FOUND_MESSAGE;
     }
 }
