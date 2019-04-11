@@ -116,6 +116,7 @@ public class Controller implements Initializable {
         // Checks if file was selected
         if (file != null) {
             model.loadFile(file);
+            resetMenu();
         }
     }
     
@@ -144,10 +145,9 @@ public class Controller implements Initializable {
         attributes.add(activeCombo.getSelectionModel().getSelectedItem());
     
         try {
-            final String RESULT_MESSAGE = "Closest Match: ";
             final String MATCH_NOT_FOUND_MESSAGE = "No matches were found.";
             Searchable result = model.search(attributes);
-            resultField.setText(result != null ? RESULT_MESSAGE + result.getName() : MATCH_NOT_FOUND_MESSAGE);
+            resultField.setText(result != null ? result.getName() : MATCH_NOT_FOUND_MESSAGE);
         } catch (AttributeCountException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.CLOSE);
             alert.showAndWait();
