@@ -3,6 +3,7 @@ package main.model;
 import main.model.Exceptions.AttributeCountException;
 import main.model.Loader.Loader;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,14 +11,12 @@ public class Model {
     
     private Loader loader;
     private final String SAVE_DATA_FILE_NAME = "res/searchables.bin";
-    private final String IMPORT_ANIMAL_DATA_FILE_NAME = "res/animals.txt";
     private List<Searchable> searchables;
     
     public Model() {
         loader = new Loader();
         searchables = new ArrayList<>();
         searchables = loader.loadSearchables(SAVE_DATA_FILE_NAME);
-        //loadFile();
     }
     
     public void saveSearchables() {
@@ -25,8 +24,8 @@ public class Model {
     }
     
     // Deprecated. will only be loaded by View menu in the future.
-    public void loadFile() {
-        searchables.addAll(loader.loadAnimals(IMPORT_ANIMAL_DATA_FILE_NAME));
+    public void loadFile(File file) {
+        searchables.addAll(loader.loadFile(file.getPath()));
     }
     
     public List<Searchable> getSearchables() {
