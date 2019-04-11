@@ -1,12 +1,12 @@
 package main.model.Loader;
 
-import main.model.AnimalSearchable;
 import main.model.AnimalSearchableBuilder;
-import main.model.Searchable;
 import main.model.Attributes;
+import main.model.Searchable;
 
 import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Loader {
     

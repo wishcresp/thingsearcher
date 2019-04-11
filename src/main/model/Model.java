@@ -26,7 +26,6 @@ public class Model {
         loader.saveSearchables(SAVE_DATA_FILE_NAME, this.searchables);
     }
     
-    // Deprecated. will only be loaded by View menu in the future.
     public void loadFile(File file) {
         searchables.addAll(loader.loadFile(file.getPath()));
     }
