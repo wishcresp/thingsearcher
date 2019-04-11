@@ -9,7 +9,7 @@ import java.util.List;
 public class Model {
     
     private final String ANIMAL_DATA_FILE_NAME = "res/animals.txt";
-    private final String RESULT_MESSAGE = "Is it an ";
+    private final String RESULT_MESSAGE = "Closest Match: ";
     private final String MATCH_NOT_FOUND_MESSAGE = "No matches were found.";
     private List<Searchable> searchables;
     
@@ -55,6 +55,6 @@ public class Model {
             }
         }
         // Return name of search result of error message if no result found
-        return searchResult != null ? (RESULT_MESSAGE + searchResult.getName() + "?") : MATCH_NOT_FOUND_MESSAGE;
+        return searchResult != null ? (RESULT_MESSAGE + searchResult.getName()) : MATCH_NOT_FOUND_MESSAGE;
     }
 }
