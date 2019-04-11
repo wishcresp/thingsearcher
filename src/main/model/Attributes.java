@@ -6,19 +6,34 @@ public class Attributes {
     public enum Wings {
         UNKNOWN,
         YES,
-        NO
+        NO;
+    
+        @Override
+        public String toString() {
+            return "Does it have wings?";
+        }
     }
     
     public enum Fly {
         UNKNOWN,
         YES,
-        NO
+        NO;
+    
+        @Override
+        public String toString() {
+            return "Can it fly?";
+        }
     }
     
     public enum Tail {
         UNKNOWN,
         YES,
-        NO
+        NO;
+    
+        @Override
+        public String toString() {
+            return "Does it have a tail?";
+        }
     }
     
     public enum Legs {
@@ -27,27 +42,46 @@ public class Attributes {
         TWO,
         FOUR,
         SIX,
-        EIGHT
+        EIGHT;
+    
+        @Override
+        public String toString() {
+            return "Is it domesticated or wild?";
+        }
     }
     
     public enum Active {
         UNKNOWN,
         DIURNAL,
         NOCTURNAL,
-        CATHEMERAL
+        CATHEMERAL;
+    
+        @Override
+        public String toString() {
+            return "When is it active?";
+        }
     }
     
     public enum Habitat {
         UNKNOWN,
         TERRESTRIAL,
-        AQUATIC
-    }
+        AQUATIC;
     
+        @Override
+        public String toString() {
+            return "Is it terrestrial or aquatic?";
+        }
+    }
     public enum Nature {
         UNKNOWN,
         WILD,
         DOMESTICATED,
-        BOTH
+        BOTH;
+    
+        @Override
+        public String toString() {
+            return "Is it domesticated or wild?";
+        }
     }
     
 }

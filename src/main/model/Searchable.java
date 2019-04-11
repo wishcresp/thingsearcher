@@ -3,6 +3,7 @@ package main.model;
 import main.model.Exceptions.NullAttributeException;
 
 import java.util.List;
+import java.util.Set;
 
 public interface Searchable {
     
@@ -11,7 +12,8 @@ public interface Searchable {
     
     String getName();
     
-    int getAttributeCount();
+    Set<Enum> getAttributes();
     
     int getNumberOfMatches(List<Enum> attributes) throws NullAttributeException;
+    
 }
