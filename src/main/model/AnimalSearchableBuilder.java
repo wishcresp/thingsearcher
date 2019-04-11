@@ -3,18 +3,18 @@ package main.model;
 public class AnimalSearchableBuilder {
     
     private Attributes.Legs numOfLegs;
-    private Attributes.Feature hasWings;
-    private Attributes.Feature canFly;
-    private Attributes.Feature hasTail;
+    private Attributes.Wings hasWings;
+    private Attributes.Fly canFly;
+    private Attributes.Tail hasTail;
     private Attributes.Nature nature;
     private Attributes.Habitat habitat;
     private Attributes.Active active;
     
     public AnimalSearchableBuilder() {
         this.numOfLegs = Attributes.Legs.UNKNOWN;
-        this.hasWings = Attributes.Feature.UNKNOWN;
-        this.canFly = Attributes.Feature.UNKNOWN;
-        this.hasTail = Attributes.Feature.UNKNOWN;
+        this.hasWings = Attributes.Wings.UNKNOWN;
+        this.canFly = Attributes.Fly.UNKNOWN;
+        this.hasTail = Attributes.Tail.UNKNOWN;
         this.nature = Attributes.Nature.UNKNOWN;
         this.habitat = Attributes.Habitat.UNKNOWN;
         this.active = Attributes.Active.UNKNOWN;
@@ -30,17 +30,17 @@ public class AnimalSearchableBuilder {
         return this;
     }
 
-    public AnimalSearchableBuilder hasWings(Attributes.Feature hasWings) {
+    public AnimalSearchableBuilder hasWings(Attributes.Wings hasWings) {
         this.hasWings = hasWings;
         return this;
     }
     
-    public AnimalSearchableBuilder canFly(Attributes.Feature canFly) {
+    public AnimalSearchableBuilder canFly(Attributes.Fly canFly) {
         this.canFly = canFly;
         return this;
     }
     
-    public AnimalSearchableBuilder hasTail(Attributes.Feature hasTail) {
+    public AnimalSearchableBuilder hasTail(Attributes.Tail hasTail) {
         this.hasTail = hasTail;
         return this;
     }

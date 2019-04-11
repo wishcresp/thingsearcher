@@ -28,9 +28,9 @@ class ModelTest {
     
     private static void initializeSearchQuery() {
         attributes.add(Attributes.Legs.UNKNOWN);
-        attributes.add(Attributes.Feature.UNKNOWN);
-        attributes.add(Attributes.Feature.UNKNOWN);
-        attributes.add(Attributes.Feature.YES);
+        attributes.add(Attributes.Wings.UNKNOWN);
+        attributes.add(Attributes.Fly.UNKNOWN);
+        attributes.add(Attributes.Tail.YES);
         attributes.add(Attributes.Nature.WILD);
         attributes.add(Attributes.Habitat.AQUATIC);
         attributes.add(Attributes.Active.UNKNOWN);

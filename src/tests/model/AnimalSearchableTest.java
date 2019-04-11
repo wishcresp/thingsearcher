@@ -22,7 +22,7 @@ class AnimalSearchableTest {
     static void setup() {
         attributes = new ArrayList<>();
         initializeAttributes();
-        searchable = new AnimalSearchable(Attributes.Legs.FOUR, Attributes.Feature.NO, Attributes.Feature.NO, Attributes.Feature.YES,
+        searchable = new AnimalSearchable(Attributes.Legs.FOUR, Attributes.Wings.NO, Attributes.Fly.NO, Attributes.Tail.YES,
                 Attributes.Nature.DOMESTICATED, Attributes.Habitat.TERRESTRIAL, Attributes.Active.DIURNAL);
         
     }
@@ -30,9 +30,9 @@ class AnimalSearchableTest {
     private static void initializeAttributes() {
         attributes.clear();
         attributes.add(Attributes.Legs.FOUR);
-        attributes.add(Attributes.Feature.NO);
-        attributes.add(Attributes.Feature.NO);
-        attributes.add(Attributes.Feature.YES);
+        attributes.add(Attributes.Wings.NO);
+        attributes.add(Attributes.Fly.NO);
+        attributes.add(Attributes.Tail.YES);
         attributes.add(Attributes.Nature.DOMESTICATED);
         attributes.add(Attributes.Habitat.TERRESTRIAL);
         attributes.add(Attributes.Active.DIURNAL);
@@ -62,8 +62,8 @@ class AnimalSearchableTest {
     void getNumberOfMatchesLessMatchesTest() {
         initializeAttributes();
         attributes.set(0, Attributes.Legs.UNKNOWN);
-        attributes.set(1, Attributes.Feature.UNKNOWN);
-        attributes.set(2, Attributes.Feature.UNKNOWN);
+        attributes.set(1, Attributes.Wings.UNKNOWN);
+        attributes.set(2, Attributes.Fly.UNKNOWN);
         try {
             assertEquals(searchable.getNumberOfMatches(attributes), 4);
         } catch (AttributeCountException e) {

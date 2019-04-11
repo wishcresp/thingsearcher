@@ -23,15 +23,15 @@ class AbstractSearchableTest {
     static void setup() {
         name = "TestAnimal";
         initializeAttributes();
-        searchable = new AnimalSearchable(name, Attributes.Legs.UNKNOWN, Attributes.Feature.UNKNOWN, Attributes.Feature.UNKNOWN, Attributes.Feature.UNKNOWN,
+        searchable = new AnimalSearchable(name, Attributes.Legs.UNKNOWN, Attributes.Wings.UNKNOWN, Attributes.Fly.UNKNOWN, Attributes.Tail.UNKNOWN,
                 Attributes.Nature.UNKNOWN, Attributes.Habitat.UNKNOWN, Attributes.Active.UNKNOWN);
     }
     
     private static void initializeAttributes() {
         attributes.add(Attributes.Legs.UNKNOWN);
-        attributes.add(Attributes.Feature.UNKNOWN);
-        attributes.add(Attributes.Feature.UNKNOWN);
-        attributes.add(Attributes.Feature.UNKNOWN);
+        attributes.add(Attributes.Wings.UNKNOWN);
+        attributes.add(Attributes.Fly.UNKNOWN);
+        attributes.add(Attributes.Tail.UNKNOWN);
         attributes.add(Attributes.Nature.UNKNOWN);
         attributes.add(Attributes.Habitat.UNKNOWN);
         attributes.add(Attributes.Active.UNKNOWN);
@@ -46,7 +46,7 @@ class AbstractSearchableTest {
     @Test
     @DisplayName("UNKNOWN name is expected")
     void getUnknownNameTest() {
-        AnimalSearchable unknownSearchable = new AnimalSearchable(Attributes.Legs.UNKNOWN, Attributes.Feature.UNKNOWN, Attributes.Feature.UNKNOWN, Attributes.Feature.UNKNOWN,
+        AnimalSearchable unknownSearchable = new AnimalSearchable(Attributes.Legs.UNKNOWN, Attributes.Wings.UNKNOWN, Attributes.Fly.UNKNOWN, Attributes.Tail.UNKNOWN,
                 Attributes.Nature.UNKNOWN, Attributes.Habitat.UNKNOWN, Attributes.Active.UNKNOWN);
         assertEquals(unknownSearchable.getName(), unknownSearchable.UNKNOWN);
     }

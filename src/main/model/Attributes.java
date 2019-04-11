@@ -2,11 +2,23 @@ package main.model;
 
 public class Attributes {
     
-    public enum Feature {
+    
+    public enum Wings {
         UNKNOWN,
         YES,
-        NO,
-        BOTH
+        NO
+    }
+    
+    public enum Fly {
+        UNKNOWN,
+        YES,
+        NO
+    }
+    
+    public enum Tail {
+        UNKNOWN,
+        YES,
+        NO
     }
     
     public enum Legs {

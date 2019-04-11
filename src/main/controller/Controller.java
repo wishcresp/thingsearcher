@@ -55,9 +55,9 @@ public class Controller implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         // Populate Combo boxes
         legsCombo.setItems(FXCollections.observableArrayList(Attributes.Legs.values()));
-        wingsCombo.setItems(FXCollections.observableArrayList(Attributes.Feature.values()));
-        flyCombo.setItems(FXCollections.observableArrayList(Attributes.Feature.values()));
-        tailCombo.setItems(FXCollections.observableArrayList(Attributes.Feature.values()));
+        wingsCombo.setItems(FXCollections.observableArrayList(Attributes.Wings.values()));
+        flyCombo.setItems(FXCollections.observableArrayList(Attributes.Fly.values()));
+        tailCombo.setItems(FXCollections.observableArrayList(Attributes.Tail.values()));
         natureCombo.setItems(FXCollections.observableArrayList(Attributes.Nature.values()));
         habitatCombo.setItems(FXCollections.observableArrayList(Attributes.Habitat.values()));
         activeCombo.setItems(FXCollections.observableArrayList(Attributes.Active.values()));

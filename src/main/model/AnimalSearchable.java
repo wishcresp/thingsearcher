@@ -6,7 +6,7 @@ import java.util.List;
 
 public class AnimalSearchable extends AbstractSearchable {
     
-    public AnimalSearchable(String name, Attributes.Legs numOfLegs, Attributes.Feature hasWings, Attributes.Feature canFly, Attributes.Feature hasTail,
+    public AnimalSearchable(String name, Attributes.Legs numOfLegs, Attributes.Wings hasWings, Attributes.Fly canFly, Attributes.Tail hasTail,
                             Attributes.Nature nature, Attributes.Habitat habitat, Attributes.Active active) {
         super(name);
         this.attributes.add(numOfLegs);
@@ -19,7 +19,7 @@ public class AnimalSearchable extends AbstractSearchable {
     }
     
     // Decided to not overload this constructor so UNKNOWN name is handled by the AbstractSearchable constructor instead
-    public AnimalSearchable(Attributes.Legs numOfLegs, Attributes.Feature hasWings, Attributes.Feature canFly, Attributes.Feature hasTail,
+    public AnimalSearchable(Attributes.Legs numOfLegs, Attributes.Wings hasWings, Attributes.Fly canFly, Attributes.Tail hasTail,
                             Attributes.Nature nature, Attributes.Habitat habitat, Attributes.Active active) {
         // this(UNKNOWN, numOfLegs, hasWings, canFly, hasTail, nature, habitat, active);
         this.attributes.add(numOfLegs);
