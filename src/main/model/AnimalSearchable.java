@@ -31,34 +31,6 @@ public class AnimalSearchable extends AbstractSearchable {
         this.attributes.add(active);
     }
     
-    public Enum getNumOfLegs() {
-        return this.attributes.get(0);
-    }
-    
-    public Enum getHasWings() {
-        return this.attributes.get(1);
-    }
-    
-    public Enum getCanFly() {
-        return this.attributes.get(2);
-    }
-    
-    public Enum getHasTail() {
-        return this.attributes.get(3);
-    }
-    
-    public Enum getNature() {
-        return this.attributes.get(4);
-    }
-    
-    public Enum getHabitat() {
-        return this.attributes.get(5);
-    }
-    
-    public Enum getActive() {
-        return this.attributes.get(6);
-    }
-    
     /**
      * Returns the number of matching attributes from a search result
      * @param attributes List of Enum attributes
