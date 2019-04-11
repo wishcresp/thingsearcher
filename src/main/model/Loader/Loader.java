@@ -1,6 +1,7 @@
 package main.model.Loader;
 
 import main.model.AnimalSearchable;
+import main.model.AnimalSearchableBuilder;
 import main.model.Searchable;
 import main.model.Attributes;
 
@@ -30,7 +31,7 @@ public class Loader {
         }
     }
     
-    public List<Searchable> loadAnimals(String filename) {
+    public List<Searchable> loadFile(String filename) {
         List<Searchable> animalSearchables = new ArrayList<>();
         String line, tokens[];
         
@@ -41,9 +42,7 @@ public class Loader {
             
             while ((line = bufferedReader.readLine()) != null) {
                 tokens = line.split(",");
-                animalSearchables.add(new AnimalSearchable(tokens[0], Attributes.Legs.valueOf(tokens[1]),
-                        Attributes.Wings.valueOf(tokens[2]), Attributes.Fly.valueOf(tokens[3]), Attributes.Tail.valueOf(tokens[4]),
-                        Attributes.Nature.valueOf(tokens[5]), Attributes.Habitat.valueOf(tokens[6]), Attributes.Active.valueOf(tokens[7])));
+                animalSearchables.add(buildAnimal(tokens));
             }
             bufferedReader.close();
         } catch (Exception e) {
@@ -51,6 +50,25 @@ public class Loader {
         }
         
         return animalSearchables;
+    }
+    
+    private Searchable buildAnimal(String[] tokens) {
+        AnimalSearchableBuilder builder = new AnimalSearchableBuilder();
+        if (!tokens[2].equals(""))
+            builder.numOfLegs(Attributes.Legs.valueOf(tokens[2]));
+        if (!tokens[3].equals(""))
+            builder.hasWings(Attributes.Wings.valueOf(tokens[3]));
+        if (!tokens[4].equals(""))
+            builder.canFly(Attributes.Fly.valueOf(tokens[4]));
+        if (!tokens[5].equals(""))
+            builder.hasTail(Attributes.Tail.valueOf(tokens[5]));
+        if (!tokens[6].equals(""))
+            builder.nature(Attributes.Nature.valueOf(tokens[6]));
+        if (!tokens[7].equals(""))
+            builder.habitat(Attributes.Habitat.valueOf(tokens[7]));
+        if (!tokens[8].equals(""))
+            builder.active(Attributes.Active.valueOf(tokens[8]));
+        return builder.build(tokens[1]);
     }
     
 }
