@@ -8,19 +8,25 @@ import java.util.List;
 
 public class Model {
     
-    private final String ANIMAL_DATA_FILE_NAME = "res/animals.txt";
-    private final String RESULT_MESSAGE = "Closest Match: ";
-    private final String MATCH_NOT_FOUND_MESSAGE = "No matches were found.";
+    private Loader loader;
+    private final String SAVE_DATA_FILE_NAME = "res/searchables.bin";
+    private final String IMPORT_ANIMAL_DATA_FILE_NAME = "res/animals.txt";
     private List<Searchable> searchables;
     
     public Model() {
+        loader = new Loader();
         searchables = new ArrayList<>();
-        loadSearchables();
+        searchables = loader.loadSearchables(SAVE_DATA_FILE_NAME);
+        //loadFile();
     }
     
-    private void loadSearchables() {
-        searchables.addAll(Loader.loadAnimals(ANIMAL_DATA_FILE_NAME));
-        // TODO: Load additional types of searchables in the future
+    public void saveSearchables() {
+        loader.saveSearchables(SAVE_DATA_FILE_NAME, this.searchables);
+    }
+    
+    // Deprecated. will only be loaded by View menu in the future.
+    public void loadFile() {
+        searchables.addAll(loader.loadAnimals(IMPORT_ANIMAL_DATA_FILE_NAME));
     }
     
     public List<Searchable> getSearchables() {
@@ -32,12 +38,12 @@ public class Model {
     }
     
     /**
-     * Returns a formatted message of the closest matching searchable for a list of attributes search query
+     * Returns a matching searchable
      * @param attributes List of enum attributes of a search query
-     * @return Message containing found result or not found message
+     * @return Searchable match or null if no match found
      * @throws AttributeCountException The number of the supplied attributes was wrong for the searchable type
      */
-    public String search(List<Enum> attributes) throws AttributeCountException {
+    public Searchable search(List<Enum> attributes) throws AttributeCountException {
         // Check for null values in search
         if (attributes.contains(null)) {
             throw new AttributeCountException("A provided attribute was null");
@@ -54,7 +60,7 @@ public class Model {
                 maxAttributeMatches = attributeMatches;
             }
         }
-        // Return name of search result of error message if no result found
-        return searchResult != null ? (RESULT_MESSAGE + searchResult.getName()) : MATCH_NOT_FOUND_MESSAGE;
+        // Return a searchable if found
+        return searchResult;
     }
 }

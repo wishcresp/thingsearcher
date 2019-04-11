@@ -2,11 +2,12 @@ package main.model;
 
 import main.model.Exceptions.AttributeCountException;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public abstract class AbstractSearchable implements Searchable {
+public abstract class AbstractSearchable implements Searchable, Serializable {
     
     String ATTRIBUTE_COUNT_EXCEPTION_MESSAGE = "Error: The number of provided attributes is wrong";
     Set<Enum> attributes = new HashSet<>();

@@ -1,5 +1,6 @@
 package main.controller;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -7,7 +8,9 @@ import javafx.scene.control.*;
 import main.model.Attributes;
 import main.model.Exceptions.AttributeCountException;
 import main.model.Model;
+import main.model.Searchable;
 
+import java.awt.event.ActionEvent;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -83,7 +86,10 @@ public class Controller implements Initializable {
             attributes.add(activeCombo.getSelectionModel().getSelectedItem());
             
             try {
-                resultField.setText(model.search(attributes));
+                final String RESULT_MESSAGE = "Closest Match: ";
+                final String MATCH_NOT_FOUND_MESSAGE = "No matches were found.";
+                Searchable result = model.search(attributes);
+                resultField.setText(result != null ? RESULT_MESSAGE + result.getName() : MATCH_NOT_FOUND_MESSAGE);
             } catch (AttributeCountException e) {
                 Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.CLOSE);
                 alert.showAndWait();
