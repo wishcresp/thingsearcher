@@ -14,22 +14,21 @@ public class IntegradevApplication extends Application {
     private static Model model;
     
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage stage) throws Exception{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("layouts/IntegradevSearcher.fxml"));
         Parent root = loader.load();
         Controller controller = loader.getController();
-        controller.setModel(model);
-        primaryStage.setTitle("Integradev Interview Application");
-        primaryStage.setScene(new Scene(root));
+        controller.setModel(model, stage);
+        stage.setTitle("Integradev Interview Application");
+        stage.setScene(new Scene(root));
         
-        primaryStage.setOnCloseRequest(event -> {
+        stage.setOnCloseRequest(event -> {
             model.saveSearchables();
             Platform.exit();
             System.exit(0);
         });
         
-        primaryStage.show();
-        
+        stage.show();
     }
     
     public static void main(String[] args) {

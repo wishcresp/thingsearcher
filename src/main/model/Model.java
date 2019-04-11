@@ -3,6 +3,7 @@ package main.model;
 import main.model.Exceptions.AttributeCountException;
 import main.model.Loader.Loader;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,8 +26,8 @@ public class Model {
     }
     
     // Deprecated. will only be loaded by View menu in the future.
-    public void loadFile() {
-        searchables.addAll(loader.loadAnimals(IMPORT_ANIMAL_DATA_FILE_NAME));
+    public void loadFile(File file) {
+        searchables.addAll(loader.loadAnimals(file.getPath()));
     }
     
     public List<Searchable> getSearchables() {

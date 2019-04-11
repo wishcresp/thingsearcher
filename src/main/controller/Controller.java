@@ -1,16 +1,17 @@
 package main.controller;
 
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import main.model.Attributes;
 import main.model.Exceptions.AttributeCountException;
 import main.model.Model;
 import main.model.Searchable;
 
-import java.awt.event.ActionEvent;
+import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,13 +20,21 @@ import java.util.ResourceBundle;
 public class Controller implements Initializable {
     
     private Model model;
+    private Stage stage;
     
-    public void setModel(Model model) {
+    public void setModel(Model model, Stage stage) {
         this.model = model;
+        this.stage = stage;
     }
+    
+    @FXML // fx:id="menuLoadFile"
+    private MenuItem menuLoadFile;
     
     @FXML // fx:id="menuReset"
     private MenuItem menuReset;
+    
+    @FXML //fx:id="menuDeleteData"
+    private MenuItem menuDeleteData;
     
     @FXML // fx:id="legsCombo"
     private ComboBox<Enum> legsCombo;
@@ -66,34 +75,22 @@ public class Controller implements Initializable {
         activeCombo.setItems(FXCollections.observableArrayList(Attributes.Active.values()));
         
         selectDefaultComboBoxItems();
-        
-        // Add listener to menu item
-        menuReset.setOnAction(event -> {
-            selectDefaultComboBoxItems();
-            resultField.setText("");
+    
+        // User selects file to load
+        menuLoadFile.setOnAction(event -> {
+            showFileSelector();
         });
         
-        // Add listener to button
+        menuReset.setOnAction(event -> {
+            resetMenu();
+        });
+        
+        menuDeleteData.setOnAction(event -> {
+            deleteAllData();
+        });
+        
         searchButton.setOnAction(event -> {
-            // Build attributes search query
-            List<Enum> attributes = new ArrayList<>();
-            attributes.add(legsCombo.getSelectionModel().getSelectedItem());
-            attributes.add(wingsCombo.getSelectionModel().getSelectedItem());
-            attributes.add(flyCombo.getSelectionModel().getSelectedItem());
-            attributes.add(tailCombo.getSelectionModel().getSelectedItem());
-            attributes.add(natureCombo.getSelectionModel().getSelectedItem());
-            attributes.add(habitatCombo.getSelectionModel().getSelectedItem());
-            attributes.add(activeCombo.getSelectionModel().getSelectedItem());
-            
-            try {
-                final String RESULT_MESSAGE = "Closest Match: ";
-                final String MATCH_NOT_FOUND_MESSAGE = "No matches were found.";
-                Searchable result = model.search(attributes);
-                resultField.setText(result != null ? RESULT_MESSAGE + result.getName() : MATCH_NOT_FOUND_MESSAGE);
-            } catch (AttributeCountException e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.CLOSE);
-                alert.showAndWait();
-            }
+           search();
         });
     }
     
@@ -106,4 +103,55 @@ public class Controller implements Initializable {
         habitatCombo.getSelectionModel().select(0);
         activeCombo.getSelectionModel().select(0);
     }
+    
+    // Prompts the user to select a file to load
+    private void showFileSelector() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open data file");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Text file", "*.txt"),
+                new FileChooser.ExtensionFilter("All files", "*.*")
+        );
+        File file = fileChooser.showOpenDialog(stage);
+        // Checks if file was selected
+        if (file != null) {
+            model.loadFile(file);
+        }
+    }
+    
+    // Clears the menu to default values
+    private void resetMenu() {
+        selectDefaultComboBoxItems();
+        resultField.setText("");
+    }
+    
+    // Deletes all searchable data from the system
+    private void deleteAllData() {
+        resetMenu();
+        model.clearSearchables();
+    }
+    
+    // Main search function when search button is pressed
+    private void search() {
+        // Build attributes search query
+        List<Enum> attributes = new ArrayList<>();
+        attributes.add(legsCombo.getSelectionModel().getSelectedItem());
+        attributes.add(wingsCombo.getSelectionModel().getSelectedItem());
+        attributes.add(flyCombo.getSelectionModel().getSelectedItem());
+        attributes.add(tailCombo.getSelectionModel().getSelectedItem());
+        attributes.add(natureCombo.getSelectionModel().getSelectedItem());
+        attributes.add(habitatCombo.getSelectionModel().getSelectedItem());
+        attributes.add(activeCombo.getSelectionModel().getSelectedItem());
+    
+        try {
+            final String RESULT_MESSAGE = "Closest Match: ";
+            final String MATCH_NOT_FOUND_MESSAGE = "No matches were found.";
+            Searchable result = model.search(attributes);
+            resultField.setText(result != null ? RESULT_MESSAGE + result.getName() : MATCH_NOT_FOUND_MESSAGE);
+        } catch (AttributeCountException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.CLOSE);
+            alert.showAndWait();
+        }
+    }
+    
 }
