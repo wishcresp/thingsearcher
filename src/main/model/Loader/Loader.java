@@ -32,7 +32,7 @@ public class Loader {
     }
     
     public List<Searchable> loadFile(String filename) {
-        List<Searchable> animalSearchables = new ArrayList<>();
+        List<Searchable> searchables = new ArrayList<>();
         String line, tokens[];
         
         try {
@@ -42,14 +42,16 @@ public class Loader {
             
             while ((line = bufferedReader.readLine()) != null) {
                 tokens = line.split(",");
-                animalSearchables.add(buildAnimal(tokens));
+                switch (tokens[0]) {
+                    case "ANIMAL":
+                        searchables.add(buildAnimal(tokens));
+                }
             }
             bufferedReader.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
-        return animalSearchables;
+        return searchables;
     }
     
     private Searchable buildAnimal(String[] tokens) {

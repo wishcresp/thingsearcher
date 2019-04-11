@@ -15,8 +15,11 @@ public class Model {
     
     public Model() {
         loader = new Loader();
-        searchables = new ArrayList<>();
         searchables = loader.loadSearchables(SAVE_DATA_FILE_NAME);
+        // Check if searchables were successfully loaded
+        if (searchables == null) {
+            searchables = new ArrayList<>();
+        }
     }
     
     public void saveSearchables() {

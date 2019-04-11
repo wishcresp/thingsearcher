@@ -1,6 +1,5 @@
 package tests.model.loader;
 
-import javafx.stage.FileChooser;
 import main.model.Model;
 import main.model.Searchable;
 import org.junit.jupiter.api.DisplayName;
