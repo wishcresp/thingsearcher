@@ -1,7 +1,7 @@
 package tests.model;
 
 import main.model.Attributes;
-import main.model.Exceptions.AttributeCountException;
+import main.model.Exceptions.NullAttributeException;
 import main.model.Model;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -48,7 +48,7 @@ class ModelTest {
         initializeSearchQuery();
         try {
             assertEquals(model.search(attributes), "PENGUIN");
-        } catch (AttributeCountException e) {
+        } catch (NullAttributeException e) {
             fail("Exception should not be thrown");
         }
     }

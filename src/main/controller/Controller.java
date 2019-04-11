@@ -7,7 +7,7 @@ import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import main.model.Attributes;
-import main.model.Exceptions.AttributeCountException;
+import main.model.Exceptions.NullAttributeException;
 import main.model.Model;
 import main.model.Searchable;
 
@@ -148,7 +148,7 @@ public class Controller implements Initializable {
             final String MATCH_NOT_FOUND_MESSAGE = "No matches were found.";
             Searchable result = model.search(attributes);
             resultField.setText(result != null ? result.getName() : MATCH_NOT_FOUND_MESSAGE);
-        } catch (AttributeCountException e) {
+        } catch (NullAttributeException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.CLOSE);
             alert.showAndWait();
         }

@@ -1,6 +1,6 @@
 package main.model;
 
-import main.model.Exceptions.AttributeCountException;
+import main.model.Exceptions.NullAttributeException;
 
 import java.util.List;
 
@@ -13,5 +13,5 @@ public interface Searchable {
     
     int getAttributeCount();
     
-    int getNumberOfMatches(List<Enum> attributes) throws AttributeCountException;
+    int getNumberOfMatches(List<Enum> attributes) throws NullAttributeException;
 }

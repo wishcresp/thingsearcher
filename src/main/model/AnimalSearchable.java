@@ -1,7 +1,5 @@
 package main.model;
 
-import main.model.Exceptions.AttributeCountException;
-
 import java.util.List;
 
 public class AnimalSearchable extends AbstractSearchable {
@@ -24,14 +22,9 @@ public class AnimalSearchable extends AbstractSearchable {
      * @param attributes List of Enum attributes
      * @return The number of attribute matches indicating the desirability of the search result. Returns NO_MATCH if a
      * non UNKNOWN attribute does not match.
-     * @throws AttributeCountException Thrown when the number of provided attributes is not expected
      */
     @Override
-    public int getNumberOfMatches(List<Enum> attributes) throws AttributeCountException {
-        // Check if the supplied number of attributes matches this searchable type
-        if (attributes.size() != this.attributes.size()) {
-            throw new AttributeCountException(ATTRIBUTE_COUNT_EXCEPTION_MESSAGE);
-        }
+    public int getNumberOfMatches(List<Enum> attributes) {
         int numOfMatches = 0;
         // Compare each of the attributes
         for (Enum attribute : attributes) {

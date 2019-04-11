@@ -1,6 +1,6 @@
 package main.model;
 
-import main.model.Exceptions.AttributeCountException;
+import main.model.Exceptions.NullAttributeException;
 import main.model.Loader.Loader;
 
 import java.io.File;
@@ -42,12 +42,12 @@ public class Model {
      * Returns a matching searchable
      * @param attributes List of enum attributes of a search query
      * @return Searchable match or null if no match found
-     * @throws AttributeCountException The number of the supplied attributes was wrong for the searchable type
+     * @throws NullAttributeException A supplied attribute was null
      */
-    public Searchable search(List<Enum> attributes) throws AttributeCountException {
+    public Searchable search(List<Enum> attributes) throws NullAttributeException {
         // Check for null values in search
         if (attributes.contains(null)) {
-            throw new AttributeCountException("A provided attribute was null");
+            throw new NullAttributeException("Error: A provided attribute was null");
         }
         
         Searchable searchResult = null;

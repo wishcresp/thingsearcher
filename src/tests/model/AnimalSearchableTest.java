@@ -2,7 +2,7 @@ package tests.model;
 
 import main.model.AnimalSearchable;
 import main.model.Attributes;
-import main.model.Exceptions.AttributeCountException;
+import main.model.Exceptions.NullAttributeException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -44,7 +44,7 @@ class AnimalSearchableTest {
         initializeAttributes();
         try {
             assertEquals(searchable.getNumberOfMatches(attributes), 7);
-        } catch (AttributeCountException e) {
+        } catch (NullAttributeException e) {
             fail("Attribute count was not correct");
         }
     }
@@ -54,7 +54,7 @@ class AnimalSearchableTest {
     void getNumberOfMatchesTestException() {
         initializeAttributes();
         attributes.remove(0);
-        assertThrows(AttributeCountException.class, () -> searchable.getNumberOfMatches(attributes));
+        assertThrows(NullAttributeException.class, () -> searchable.getNumberOfMatches(attributes));
     }
     
     @Test
@@ -66,7 +66,7 @@ class AnimalSearchableTest {
         attributes.set(2, Attributes.Fly.UNKNOWN);
         try {
             assertEquals(searchable.getNumberOfMatches(attributes), 4);
-        } catch (AttributeCountException e) {
+        } catch (NullAttributeException e) {
             fail("Attribute count should be correct");
         }
     }
@@ -78,7 +78,7 @@ class AnimalSearchableTest {
         attributes.set(4, Attributes.Nature.WILD);
         try {
             assertEquals(searchable.getNumberOfMatches(attributes), 0);
-        } catch (AttributeCountException e) {
+        } catch (NullAttributeException e) {
             fail("Attribute count should be correct");
         }
     }
