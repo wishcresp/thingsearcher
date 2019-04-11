@@ -7,7 +7,7 @@ import java.util.List;
 public interface Searchable {
     
     String UNKNOWN = "UNKNOWN";
-    int NO_MATCH = -1;
+    int NO_MATCH = 0;
     
     String getName();
     

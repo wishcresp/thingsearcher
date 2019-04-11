@@ -20,8 +20,8 @@ public class AnimalSearchableBuilder {
         this.active = Attributes.Active.UNKNOWN;
     }
     
-    public AnimalSearchable build() {
-        return new AnimalSearchable(this.numOfLegs, this.hasWings, this.canFly, this.hasTail, this.nature,
+    public AnimalSearchable build(String name) {
+        return new AnimalSearchable(name, this.numOfLegs, this.hasWings, this.canFly, this.hasTail, this.nature,
                 this.habitat, this.active);
     }
     

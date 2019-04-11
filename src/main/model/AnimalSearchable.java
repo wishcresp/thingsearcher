@@ -18,19 +18,6 @@ public class AnimalSearchable extends AbstractSearchable {
         this.attributes.add(active);
     }
     
-    // Decided to not overload this constructor so UNKNOWN name is handled by the AbstractSearchable constructor instead
-    public AnimalSearchable(Attributes.Legs numOfLegs, Attributes.Wings hasWings, Attributes.Fly canFly, Attributes.Tail hasTail,
-                            Attributes.Nature nature, Attributes.Habitat habitat, Attributes.Active active) {
-        // this(UNKNOWN, numOfLegs, hasWings, canFly, hasTail, nature, habitat, active);
-        this.attributes.add(numOfLegs);
-        this.attributes.add(hasWings);
-        this.attributes.add(canFly);
-        this.attributes.add(hasTail);
-        this.attributes.add(nature);
-        this.attributes.add(habitat);
-        this.attributes.add(active);
-    }
-    
     /**
      * Returns the number of matching attributes from a search result
      * @param attributes List of Enum attributes
@@ -45,15 +32,12 @@ public class AnimalSearchable extends AbstractSearchable {
             throw new AttributeCountException(ATTRIBUTE_COUNT_EXCEPTION_MESSAGE);
         }
         int numOfMatches = 0;
-        int numOfAttributes = this.attributes.size();
         // Compare each of the attributes
-        for (int i = 0; i < numOfAttributes; i++) {
-            Enum attribute = attributes.get(i);
-            // Check if the attribute matches
-            if (attribute.equals(this.attributes.get(i))) {
+        for (Enum attribute : attributes) {
+            boolean match = this.attributes.contains(attribute);
+            if (match) {
                 numOfMatches++;
-            // Not a match if any attribute does not match and the attribute is not an UNKNOWN value
-            } else if (!attribute.equals(this.attributes.get(i)) && !attribute.name().equals(UNKNOWN)) {
+            } else if (!attribute.name().equals(UNKNOWN)) {
                 return NO_MATCH;
             }
         }

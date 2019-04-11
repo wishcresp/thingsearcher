@@ -11,7 +11,6 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
 @DisplayName("AbstractSearchable test")
 class AbstractSearchableTest {
     
@@ -46,7 +45,7 @@ class AbstractSearchableTest {
     @Test
     @DisplayName("UNKNOWN name is expected")
     void getUnknownNameTest() {
-        AnimalSearchable unknownSearchable = new AnimalSearchable(Attributes.Legs.UNKNOWN, Attributes.Wings.UNKNOWN, Attributes.Fly.UNKNOWN, Attributes.Tail.UNKNOWN,
+        AnimalSearchable unknownSearchable = new AnimalSearchable("Animal", Attributes.Legs.UNKNOWN, Attributes.Wings.UNKNOWN, Attributes.Fly.UNKNOWN, Attributes.Tail.UNKNOWN,
                 Attributes.Nature.UNKNOWN, Attributes.Habitat.UNKNOWN, Attributes.Active.UNKNOWN);
         assertEquals(unknownSearchable.getName(), unknownSearchable.UNKNOWN);
     }

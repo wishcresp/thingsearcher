@@ -48,7 +48,7 @@ public class Model {
         // Compare query with each searchable
         for (Searchable searchable : this.searchables) {
             int attributeMatches = searchable.getNumberOfMatches(attributes);
-            // Check if more of a match than previous matches (NO_MATCH = -1 so is never considered)
+            // Check if more of a match than previous matches (NO_MATCH = 0 so is never considered)
             if (attributeMatches > maxAttributeMatches) {
                 searchResult = searchable;
                 maxAttributeMatches = attributeMatches;

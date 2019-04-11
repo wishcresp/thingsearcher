@@ -2,24 +2,21 @@ package main.model;
 
 import main.model.Exceptions.AttributeCountException;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public abstract class AbstractSearchable implements Searchable {
     
     String ATTRIBUTE_COUNT_EXCEPTION_MESSAGE = "Error: The number of provided attributes is wrong";
-    List<Enum> attributes = new ArrayList<>();
+    Set<Enum> attributes = new HashSet<>();
     private final String name;
     
     AbstractSearchable(String name) {
         this.name = name;
     }
     
-    AbstractSearchable() {
-        this.name = UNKNOWN;
-    }
-    
-    public List<Enum> getAttributes() {
+    public Set<Enum> getAttributes() {
         return this.attributes;
     }
     
