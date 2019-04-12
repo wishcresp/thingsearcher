@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import main.model.Attributes;
@@ -33,8 +34,11 @@ public class Controller implements Initializable {
     @FXML // fx:id="menuReset"
     private MenuItem menuReset;
     
-    @FXML //fx:id="menuDeleteData"
+    @FXML // fx:id="menuDeleteData"
     private MenuItem menuDeleteData;
+    
+    @FXML // fx:id="borderPane"
+    private BorderPane borderPane;
     
     @FXML // fx:id="legsCombo"
     private ComboBox<Enum> legsCombo;
@@ -65,6 +69,10 @@ public class Controller implements Initializable {
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        // TODO: Initialise a new grid pane based on number of attributes, add to center of BorderPane, loop
+        // TODO: Loop through attributes stored in model and add to grid pane
+        
+        // Deprecated
         // Populate Combo boxes
         legsCombo.setItems(FXCollections.observableArrayList(Attributes.Legs.values()));
         wingsCombo.setItems(FXCollections.observableArrayList(Attributes.Wings.values()));
@@ -77,21 +85,10 @@ public class Controller implements Initializable {
         selectDefaultComboBoxItems();
     
         // User selects file to load
-        menuLoadFile.setOnAction(event -> {
-            showFileSelector();
-        });
-        
-        menuReset.setOnAction(event -> {
-            resetMenu();
-        });
-        
-        menuDeleteData.setOnAction(event -> {
-            deleteAllData();
-        });
-        
-        searchButton.setOnAction(event -> {
-           search();
-        });
+        menuLoadFile.setOnAction(event -> showFileSelector());
+        menuReset.setOnAction(event -> resetMenu());
+        menuDeleteData.setOnAction(event -> deleteAllData());
+        searchButton.setOnAction(event -> search());
     }
     
     private void selectDefaultComboBoxItems() {

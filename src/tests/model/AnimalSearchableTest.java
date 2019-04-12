@@ -42,11 +42,7 @@ class AnimalSearchableTest {
     @DisplayName("Correctly return the number of matches")
     void getNumberOfMatchesTest() {
         initializeAttributes();
-        try {
-            assertEquals(searchable.getNumberOfMatches(attributes), 7);
-        } catch (NullAttributeException e) {
-            fail("Attribute count was not correct");
-        }
+        assertEquals(searchable.getNumberOfMatches(attributes), 7);
     }
     
     @Test
@@ -64,11 +60,7 @@ class AnimalSearchableTest {
         attributes.set(0, Attributes.Legs.UNKNOWN);
         attributes.set(1, Attributes.Wings.UNKNOWN);
         attributes.set(2, Attributes.Fly.UNKNOWN);
-        try {
-            assertEquals(searchable.getNumberOfMatches(attributes), 4);
-        } catch (NullAttributeException e) {
-            fail("Attribute count should be correct");
-        }
+        assertEquals(searchable.getNumberOfMatches(attributes), 4);
     }
     
     @Test
@@ -76,15 +68,11 @@ class AnimalSearchableTest {
     void getNumberOfMatchesNoMatchTest() {
         initializeAttributes();
         attributes.set(4, Attributes.Nature.WILD);
-        try {
-            assertEquals(searchable.getNumberOfMatches(attributes), 0);
-        } catch (NullAttributeException e) {
-            fail("Attribute count should be correct");
-        }
+        assertEquals(searchable.getNumberOfMatches(attributes), 0);
     }
     
     @Test
-    @DisplayName("Attribute count check")
+    @DisplayName("Attributes count check")
     void attributeCountTest() {
         assertEquals(searchable.getAttributes().size(), attributes.size());
     }

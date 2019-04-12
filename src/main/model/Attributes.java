@@ -2,38 +2,22 @@ package main.model;
 
 public class Attributes {
     
-    
     public enum Wings {
         UNKNOWN,
         YES,
-        NO;
-    
-        @Override
-        public String toString() {
-            return "Does it have wings?";
-        }
+        NO
     }
     
     public enum Fly {
         UNKNOWN,
         YES,
-        NO;
-    
-        @Override
-        public String toString() {
-            return "Can it fly?";
-        }
+        NO
     }
     
     public enum Tail {
         UNKNOWN,
         YES,
-        NO;
-    
-        @Override
-        public String toString() {
-            return "Does it have a tail?";
-        }
+        NO
     }
     
     public enum Legs {
@@ -42,46 +26,26 @@ public class Attributes {
         TWO,
         FOUR,
         SIX,
-        EIGHT;
-    
-        @Override
-        public String toString() {
-            return "Is it domesticated or wild?";
-        }
+        EIGHT
     }
     
     public enum Active {
         UNKNOWN,
         DIURNAL,
         NOCTURNAL,
-        CATHEMERAL;
-    
-        @Override
-        public String toString() {
-            return "When is it active?";
-        }
+        CATHEMERAL
     }
     
     public enum Habitat {
         UNKNOWN,
         TERRESTRIAL,
-        AQUATIC;
-    
-        @Override
-        public String toString() {
-            return "Is it terrestrial or aquatic?";
-        }
+        AQUATIC
     }
+    
     public enum Nature {
         UNKNOWN,
         WILD,
         DOMESTICATED,
-        BOTH;
-    
-        @Override
-        public String toString() {
-            return "Is it domesticated or wild?";
-        }
+        BOTH
     }
-    
 }

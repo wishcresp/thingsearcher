@@ -24,7 +24,7 @@
             <MenuItem fx:id="menuDeleteData" mnemonicParsing="false" text="Delete all data" />
         </Menu>
     </MenuBar>
-    <BorderPane>
+    <BorderPane fx:id="borderPane">
         <top>
           <Label text="IntegraDev - Animal Searcher by Sean Martin" BorderPane.alignment="CENTER">
               <font>

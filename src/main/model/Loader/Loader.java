@@ -1,6 +1,6 @@
 package main.model.Loader;
 
-import main.model.AnimalSearchableBuilder;
+import main.model.AnimalSearchable;
 import main.model.Attributes;
 import main.model.Searchable;
 
@@ -42,35 +42,27 @@ public class Loader {
             
             while ((line = bufferedReader.readLine()) != null) {
                 tokens = line.split(",");
+                
+                // Define the accepted searchables labels (token[0]) to load here with their relevant searchable
+                // class. It is assumed files are formatted correctly and attribute values are correct
                 switch (tokens[0]) {
                     case "ANIMAL":
-                        searchables.add(buildAnimal(tokens));
+                        searchables.add(createAnimal(tokens));
+                        break;
                 }
             }
             bufferedReader.close();
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return searchables;
     }
     
-    private Searchable buildAnimal(String[] tokens) {
-        AnimalSearchableBuilder builder = new AnimalSearchableBuilder();
-        if (!tokens[2].equals(""))
-            builder.numOfLegs(Attributes.Legs.valueOf(tokens[2]));
-        if (!tokens[3].equals(""))
-            builder.hasWings(Attributes.Wings.valueOf(tokens[3]));
-        if (!tokens[4].equals(""))
-            builder.canFly(Attributes.Fly.valueOf(tokens[4]));
-        if (!tokens[5].equals(""))
-            builder.hasTail(Attributes.Tail.valueOf(tokens[5]));
-        if (!tokens[6].equals(""))
-            builder.nature(Attributes.Nature.valueOf(tokens[6]));
-        if (!tokens[7].equals(""))
-            builder.habitat(Attributes.Habitat.valueOf(tokens[7]));
-        if (!tokens[8].equals(""))
-            builder.active(Attributes.Active.valueOf(tokens[8]));
-        return builder.build(tokens[1]);
+    private Searchable createAnimal(String[] tokens) {
+        return new AnimalSearchable(tokens[1], Attributes.Legs.valueOf(tokens[2]),
+                Attributes.Wings.valueOf(tokens[3]), Attributes.Fly.valueOf(tokens[4]),
+                Attributes.Tail.valueOf(tokens[5]), Attributes.Nature.valueOf(tokens[6]),
+                Attributes.Habitat.valueOf(tokens[7]), Attributes.Active.valueOf(tokens[8]));
     }
     
 }
