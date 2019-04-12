@@ -4,35 +4,46 @@ import main.model.Exceptions.AttributeValueCountMismatchException;
 import main.model.Exceptions.NullAttributeException;
 import main.model.Loader.Loader;
 
-import java.io.File;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Model {
     
     private Loader loader;
+    private final String SAVE_ATTR_FILENAME = "res/attributes.bin";
     private final String SAVE_DATA_FILENAME = "res/searchables.bin";
-    private final String ATTRIBUTE_DEF_FILENAME = "res/attributes.txt";
     private Map<String, Attribute> loadedAttributes;
     private List<Searchable> loadedSearchables;
     
     public Model() {
         loader = new Loader();
-        this.loadedAttributes = loader.loadAttributesFile(ATTRIBUTE_DEF_FILENAME);
         this.loadedSearchables = loader.loadSearchables(SAVE_DATA_FILENAME);
-        // Check if loadedSearchables were successfully loaded
+        this.loadedAttributes = loader.loadAttributes(SAVE_ATTR_FILENAME);
+        // Check if searchables and attributes were successfully loaded
+        if (this.loadedAttributes == null) {
+            this.loadedAttributes = new LinkedHashMap<>();
+        }
         if (this.loadedSearchables == null) {
             this.loadedSearchables = new ArrayList<>();
         }
     }
     
-    public void saveSearchables() {
-        loader.saveSearchables(SAVE_DATA_FILENAME, this.loadedSearchables);
+    public void saveAttributes() {
+        loader.saveAttributeFile(SAVE_ATTR_FILENAME, this.loadedAttributes);
     }
     
-    public void loadFile(File file) {
-        loadedSearchables.addAll(loader.loadFile(loadedAttributes, file.getPath()));
+    public void saveSearchables() {
+        loader.saveDataFile(SAVE_DATA_FILENAME, this.loadedSearchables);
+    }
+    
+    public void loadAttributes(String path) {
+        this.loadedAttributes = loader.loadAttributesFile(path);
+    }
+    
+    public void loadData(String path) {
+        this.loadedSearchables.addAll(loader.loadFile(loadedAttributes, path));
     }
     
     public List<Searchable> getLoadedSearchables() {
@@ -45,6 +56,10 @@ public class Model {
     
     public void clearSearchables() {
         this.loadedSearchables.clear();
+    }
+    
+    public void clearAttributes() {
+        this.loadedAttributes.clear();
     }
     
     /**

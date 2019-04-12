@@ -4,9 +4,11 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -35,8 +37,12 @@ public class Controller implements Initializable {
     
     private GridPane gridPane;
     
-    @FXML // fx:id="menuLoadFile"
-    private MenuItem menuLoadFile;
+    
+    @FXML // fx:id="menuLoadModel"
+    private MenuItem menuLoadModel;
+    
+    @FXML // fx:id="menuLoadData"
+    private MenuItem menuLoadData;
     
     @FXML // fx:id="menuReset"
     private MenuItem menuReset;
@@ -55,63 +61,88 @@ public class Controller implements Initializable {
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        // Setup GridPane
+        int pad = 5;
         gridPane = new GridPane();
-//        gridPane.getColumnConstraints().setAll(new ColumnConstraints(30, 200, 200, Priority.SOMETIMES, HPos.CENTER, false));
-//        gridPane.getRowConstraints().setAll(new RowConstraints(10, 30, 30));
+        gridPane.setHgap(pad);
+        gridPane.setVgap(pad);
+        gridPane.setPadding(new Insets(pad,pad,pad,pad));
+        ColumnConstraints constraints = new ColumnConstraints();
+        constraints.setPercentWidth(50);
+        gridPane.getColumnConstraints().addAll(constraints, constraints);
         borderPane.setCenter(gridPane);
         
         // User selects file to load
-        menuLoadFile.setOnAction(event -> showFileSelector());
-        menuReset.setOnAction(event -> updateInterface());
+        menuLoadModel.setOnAction(event -> loadAttributeModelData());
+        menuLoadData.setOnAction(event -> loadDataFile());
+        menuReset.setOnAction(event -> refreshInterface());
         menuDeleteData.setOnAction(event -> deleteAllData());
         searchButton.setOnAction(event -> search());
     }
     
-    private void updateInterface() {
-        resultField.setText("");
+    // Clears the GridPane and fields for reconstruction
+    public void refreshInterface() {
+        // Reset
+        comboBoxes.clear();
+        resultField.clear();
         gridPane.getChildren().clear();
-        List<Attribute> attributes = new ArrayList<>(model.getLoadedAttributes().values());
         
-        int length = attributes.size();
-        for (int i = 0; i < length; i++) {
-            Attribute attribute = attributes.get(i);
-            
-            Label label = new Label();
-            label.setText(attribute.getMessage());
-            label.setAlignment(Pos.CENTER_RIGHT);
-            GridPane.setHalignment(label, HPos.RIGHT);
-            
-            ComboBox<String> comboBox = new ComboBox<>();
-            comboBox.setPrefWidth(150);
-            comboBox.setItems(FXCollections.observableList(attribute.getValues()));
-            comboBox.getSelectionModel().select(0);
-            comboBoxes.add(comboBox);
-            
-            gridPane.add(label, 0, i + 1);
-            gridPane.add(comboBox, 1, i + 1);
+        if (!model.getLoadedAttributes().values().isEmpty()) {
+            List<Attribute> attributes = new ArrayList<>(model.getLoadedAttributes().values());
+    
+            int length = attributes.size();
+            for (int i = 0; i < length; i++) {
+                Attribute attribute = attributes.get(i);
+    
+                Label label = new Label();
+                label.setText(attribute.getMessage());
+                label.setAlignment(Pos.CENTER_RIGHT);
+                GridPane.setHalignment(label, HPos.RIGHT);
+    
+                ComboBox<String> comboBox = new ComboBox<>();
+                comboBox.setPrefWidth(150);
+                comboBox.setItems(FXCollections.observableList(attribute.getValues()));
+                comboBox.getSelectionModel().select(0);
+                comboBoxes.add(comboBox);
+    
+                gridPane.add(label, 0, i + 1);
+                gridPane.add(comboBox, 1, i + 1);
+            }
+        }
+    }
+    
+    private void loadAttributeModelData() {
+        File file = loadFile();
+        if (file != null) {
+            model.loadAttributes(file.getPath());
+            refreshInterface();
+        }
+    }
+    
+    private void loadDataFile() {
+        File file = loadFile();
+        if (file != null) {
+            model.loadData(file.getPath());
+            refreshInterface();
         }
     }
     
     // Prompts the user to select a file to load
-    private void showFileSelector() {
+    private File loadFile() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open data file");
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Text file", "*.txt"),
                 new FileChooser.ExtensionFilter("All files", "*.*")
         );
-        File file = fileChooser.showOpenDialog(stage);
-        // Checks if file was selected
-        if (file != null) {
-            model.loadFile(file);
-            updateInterface();
-        }
+        return fileChooser.showOpenDialog(stage);
     }
     
     // Deletes all searchable data from the system
     private void deleteAllData() {
+        model.clearAttributes();
         model.clearSearchables();
-        updateInterface();
+        refreshInterface();
     }
     
     // Main search function when search button is pressed

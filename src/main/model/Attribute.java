@@ -1,8 +1,9 @@
 package main.model;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class Attribute {
+public class Attribute implements Serializable {
     
     private String key;
     private String message;
@@ -12,6 +13,7 @@ public class Attribute {
         this.key = key;
         this.message = message;
         this.values = new ArrayList<>();
+        values.add("UNKNOWN");
     }
     
     // Adds a value to the attribute if it does not already exist

@@ -5,7 +5,6 @@ import main.model.Searchable;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -19,8 +18,7 @@ class LoaderTest {
     @DisplayName("Load file validation")
     void loadAnimalDataTest() {
         Model model = new Model();
-        File file = new File("res/animals.txt");
-        model.loadFile(file);
+        model.loadData("res/animals.txt");
         List<Searchable> searchableList = new Model().getLoadedSearchables();
         for (int i = 0; i < animals.length; i++) {
             assertEquals(searchableList.get(i).getName(), animals[i]);

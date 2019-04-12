@@ -19,11 +19,14 @@ public class IntegradevApplication extends Application {
         Parent root = loader.load();
         Controller controller = loader.getController();
         controller.setModel(model, stage);
+        controller.refreshInterface();
         
         stage.setTitle("Integradev Interview Application");
         stage.setScene(new Scene(root));
         
+        // Save before exit
         stage.setOnCloseRequest(event -> {
+            model.saveAttributes();
             model.saveSearchables();
             Platform.exit();
             System.exit(0);

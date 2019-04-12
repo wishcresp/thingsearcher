@@ -9,8 +9,6 @@ import java.util.*;
 
 public class Loader {
     
-    private final String UNKNOWN = "UNKNOWN";
-    
     @SuppressWarnings("unchecked")
     public List<Searchable> loadSearchables(String filename) {
         List<Searchable> searchables = null;
@@ -23,10 +21,33 @@ public class Loader {
         return searchables;
     }
     
-    public void saveSearchables(String filename, List<Searchable> searchables) {
+    @SuppressWarnings("unchecked")
+    public Map<String, Attribute> loadAttributes(String filename) {
+        Map<String, Attribute> attributes = null;
+        try {
+            ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename));
+            attributes = (Map<String, Attribute>) ois.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return attributes;
+    }
+    
+    // Tried to make this method generic ( Collection<T> ) but I discovered Map is not a collection,
+    // Decided to split into two methods instead
+    public void saveAttributeFile(String filename, Map<String, Attribute> write) {
         try {
             ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename));
-            oos.writeObject(searchables);
+            oos.writeObject(write);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void saveDataFile(String filename, List<Searchable> write) {
+        try {
+            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename));
+            oos.writeObject(write);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -49,7 +70,6 @@ public class Loader {
             while ((line = bufferedReader.readLine()) != null) {
                 tokens = line.split(",");
                 Attribute attribute = new Attribute(tokens[0], tokens[1]);
-                attribute.addValue(UNKNOWN);
                 attributes.put(tokens[0], attribute);
             }
             bufferedReader.close();
