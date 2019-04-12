@@ -21,7 +21,7 @@ class LoaderTest {
         Model model = new Model();
         File file = new File("res/animals.txt");
         model.loadFile(file);
-        List<Searchable> searchableList = new Model().getSearchables();
+        List<Searchable> searchableList = new Model().getLoadedSearchables();
         for (int i = 0; i < animals.length; i++) {
             assertEquals(searchableList.get(i).getName(), animals[i]);
         }

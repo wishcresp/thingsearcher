@@ -1,9 +1,9 @@
 package main.model;
 
-import main.model.Exceptions.NullAttributeException;
+import main.model.Exceptions.AttributeValueCountMismatchException;
 
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 public interface Searchable {
     
@@ -12,8 +12,8 @@ public interface Searchable {
     
     String getName();
     
-    Set<Enum> getAttributes();
+    Map<String, String> getAttributeValues();
     
-    int getNumberOfMatches(List<Enum> attributes) throws NullAttributeException;
+    int getNumberOfMatches(List<Attribute> attributes, List<String> searchValues) throws AttributeValueCountMismatchException;
     
 }

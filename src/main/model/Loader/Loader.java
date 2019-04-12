@@ -1,17 +1,15 @@
 package main.model.Loader;
 
-import main.model.AnimalSearchable;
 import main.model.Attribute;
-import main.model.Attributes;
 import main.model.Searchable;
+import main.model.SearchableImpl;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Loader {
+    
+    private final String UNKNOWN = "UNKNOWN";
     
     @SuppressWarnings("unchecked")
     public List<Searchable> loadSearchables(String filename) {
@@ -35,12 +33,12 @@ public class Loader {
     }
     
     /**
-     * Load attribute model from file
+     * Load attribute model from file into a LinkedHashMap
      * @param filename Filename of attributes
      * @return Map of attribute types
      */
-    public Map<String, Attribute> loadAttributesFiles(String filename) {
-        Map<String, Attribute> attributes = new HashMap<>();
+    public Map<String, Attribute> loadAttributesFile(String filename) {
+        Map<String, Attribute> attributes = new LinkedHashMap<>();
         String line, tokens[];
     
         try {
@@ -50,7 +48,9 @@ public class Loader {
             
             while ((line = bufferedReader.readLine()) != null) {
                 tokens = line.split(",");
-                attributes.put(tokens[0], new Attribute(tokens[1]));
+                Attribute attribute = new Attribute(tokens[0], tokens[1]);
+                attribute.addValue(UNKNOWN);
+                attributes.put(tokens[0], attribute);
             }
             bufferedReader.close();
         } catch (IOException e) {
@@ -75,12 +75,15 @@ public class Loader {
             BufferedReader bufferedReader = new BufferedReader(reader);
             
             while ((line = bufferedReader.readLine()) != null) {
+                Map<String, String> searchableAttributes = new HashMap<>();
                 tokens = line.split(",");
                 // For each pair, add the value to the relevant attribute
                 for (int i = 1 ; i < tokens.length; i++) {
                     String[] attributePair = tokens[i].split(":");
                     attributes.get(attributePair[0]).addValue(attributePair[1]);
+                    searchableAttributes.put(attributePair[0], attributePair[1]);
                 }
+                searchables.add(new SearchableImpl(tokens[0], searchableAttributes));
             }
             bufferedReader.close();
         } catch (IOException e) {

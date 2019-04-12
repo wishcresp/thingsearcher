@@ -3,11 +3,15 @@ package main.controller;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.HPos;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import main.model.Attributes;
+import main.model.Attribute;
+import main.model.Exceptions.AttributeValueCountMismatchException;
 import main.model.Exceptions.NullAttributeException;
 import main.model.Model;
 import main.model.Searchable;
@@ -22,11 +26,14 @@ public class Controller implements Initializable {
     
     private Model model;
     private Stage stage;
+    private List<ComboBox<String>> comboBoxes = new ArrayList<>();
     
     public void setModel(Model model, Stage stage) {
         this.model = model;
         this.stage = stage;
     }
+    
+    private GridPane gridPane;
     
     @FXML // fx:id="menuLoadFile"
     private MenuItem menuLoadFile;
@@ -40,27 +47,6 @@ public class Controller implements Initializable {
     @FXML // fx:id="borderPane"
     private BorderPane borderPane;
     
-    @FXML // fx:id="legsCombo"
-    private ComboBox<Enum> legsCombo;
-    
-    @FXML // fx:id="wingsCombo"
-    private ComboBox<Enum> wingsCombo;
-    
-    @FXML // fx:id="flyCombo"
-    private ComboBox<Enum> flyCombo;
-    
-    @FXML// fx:id="tailCombo"
-    private ComboBox<Enum> tailCombo;
-    
-    @FXML // fx:id="natureCombo"
-    private ComboBox<Enum> natureCombo;
-    
-    @FXML // fx:id="habitatCombo"
-    private ComboBox<Enum> habitatCombo;
-    
-    @FXML // fx:id="activeCombo"
-    private ComboBox<Enum> activeCombo;
-    
     @FXML // fx:id="resultField"
     private TextField resultField;
     
@@ -69,36 +55,41 @@ public class Controller implements Initializable {
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // TODO: Initialise a new grid pane based on number of attributes, add to center of BorderPane, loop
-        // TODO: Loop through attributes stored in model and add to grid pane
+        gridPane = new GridPane();
+//        gridPane.getColumnConstraints().setAll(new ColumnConstraints(30, 200, 200, Priority.SOMETIMES, HPos.CENTER, false));
+//        gridPane.getRowConstraints().setAll(new RowConstraints(10, 30, 30));
+        borderPane.setCenter(gridPane);
         
-        // Deprecated
-        // Populate Combo boxes
-        legsCombo.setItems(FXCollections.observableArrayList(Attributes.Legs.values()));
-        wingsCombo.setItems(FXCollections.observableArrayList(Attributes.Wings.values()));
-        flyCombo.setItems(FXCollections.observableArrayList(Attributes.Fly.values()));
-        tailCombo.setItems(FXCollections.observableArrayList(Attributes.Tail.values()));
-        natureCombo.setItems(FXCollections.observableArrayList(Attributes.Nature.values()));
-        habitatCombo.setItems(FXCollections.observableArrayList(Attributes.Habitat.values()));
-        activeCombo.setItems(FXCollections.observableArrayList(Attributes.Active.values()));
-        
-        selectDefaultComboBoxItems();
-    
         // User selects file to load
         menuLoadFile.setOnAction(event -> showFileSelector());
-        menuReset.setOnAction(event -> resetMenu());
+        menuReset.setOnAction(event -> updateInterface());
         menuDeleteData.setOnAction(event -> deleteAllData());
         searchButton.setOnAction(event -> search());
     }
     
-    private void selectDefaultComboBoxItems() {
-        legsCombo.getSelectionModel().select(0);
-        wingsCombo.getSelectionModel().select(0);
-        flyCombo.getSelectionModel().select(0);
-        tailCombo.getSelectionModel().select(0);
-        natureCombo.getSelectionModel().select(0);
-        habitatCombo.getSelectionModel().select(0);
-        activeCombo.getSelectionModel().select(0);
+    private void updateInterface() {
+        resultField.setText("");
+        gridPane.getChildren().clear();
+        List<Attribute> attributes = new ArrayList<>(model.getLoadedAttributes().values());
+        
+        int length = attributes.size();
+        for (int i = 0; i < length; i++) {
+            Attribute attribute = attributes.get(i);
+            
+            Label label = new Label();
+            label.setText(attribute.getMessage());
+            label.setAlignment(Pos.CENTER_RIGHT);
+            GridPane.setHalignment(label, HPos.RIGHT);
+            
+            ComboBox<String> comboBox = new ComboBox<>();
+            comboBox.setPrefWidth(150);
+            comboBox.setItems(FXCollections.observableList(attribute.getValues()));
+            comboBox.getSelectionModel().select(0);
+            comboBoxes.add(comboBox);
+            
+            gridPane.add(label, 0, i + 1);
+            gridPane.add(comboBox, 1, i + 1);
+        }
     }
     
     // Prompts the user to select a file to load
@@ -113,39 +104,29 @@ public class Controller implements Initializable {
         // Checks if file was selected
         if (file != null) {
             model.loadFile(file);
-            resetMenu();
+            updateInterface();
         }
-    }
-    
-    // Clears the menu to default values
-    private void resetMenu() {
-        selectDefaultComboBoxItems();
-        resultField.setText("");
     }
     
     // Deletes all searchable data from the system
     private void deleteAllData() {
-        resetMenu();
         model.clearSearchables();
+        updateInterface();
     }
     
     // Main search function when search button is pressed
     private void search() {
-        // Build attributes search query
-        List<Enum> attributes = new ArrayList<>();
-        attributes.add(legsCombo.getSelectionModel().getSelectedItem());
-        attributes.add(wingsCombo.getSelectionModel().getSelectedItem());
-        attributes.add(flyCombo.getSelectionModel().getSelectedItem());
-        attributes.add(tailCombo.getSelectionModel().getSelectedItem());
-        attributes.add(natureCombo.getSelectionModel().getSelectedItem());
-        attributes.add(habitatCombo.getSelectionModel().getSelectedItem());
-        attributes.add(activeCombo.getSelectionModel().getSelectedItem());
-    
+        // Build attribute values search query
+        List<String> attributes = new ArrayList<>();
+        for (ComboBox<String> comboBox : comboBoxes) {
+            attributes.add(comboBox.getSelectionModel().getSelectedItem());
+        }
+        
+        // Show the result or an error message
         try {
-            final String MATCH_NOT_FOUND_MESSAGE = "No matches were found.";
             Searchable result = model.search(attributes);
-            resultField.setText(result != null ? result.getName() : MATCH_NOT_FOUND_MESSAGE);
-        } catch (NullAttributeException e) {
+            resultField.setText(result != null ? result.getName() : "No matches were found.");
+        } catch (NullAttributeException | AttributeValueCountMismatchException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.CLOSE);
             alert.showAndWait();
         }

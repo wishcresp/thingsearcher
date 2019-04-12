@@ -19,6 +19,7 @@ public class IntegradevApplication extends Application {
         Parent root = loader.load();
         Controller controller = loader.getController();
         controller.setModel(model, stage);
+        
         stage.setTitle("Integradev Interview Application");
         stage.setScene(new Scene(root));
         
