@@ -2,7 +2,7 @@ package main.model;
 
 import java.util.*;
 
-public abstract class Attribute {
+public class Attribute {
     
     private String message;
     private List<String> values;
@@ -12,12 +12,15 @@ public abstract class Attribute {
         this.values = new ArrayList<>();
     }
     
-    public Collection<String> values() {
-        return this.values;
+    // Adds a value to the attribute if it does not already exist
+    public void addValue(String value) {
+        if (!this.values.contains(value)) {
+            this.values.add(value);
+        }
     }
     
-    public boolean contains(String value) {
-        return values.contains(value);
+    public Collection<String> getValues() {
+        return this.values;
     }
     
     public String getMessage() {

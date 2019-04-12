@@ -1,12 +1,15 @@
 package main.model.Loader;
 
 import main.model.AnimalSearchable;
+import main.model.Attribute;
 import main.model.Attributes;
 import main.model.Searchable;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Loader {
     
@@ -31,7 +34,38 @@ public class Loader {
         }
     }
     
-    public List<Searchable> loadFile(String filename) {
+    /**
+     * Load attribute model from file
+     * @param filename Filename of attributes
+     * @return Map of attribute types
+     */
+    public Map<String, Attribute> loadAttributesFiles(String filename) {
+        Map<String, Attribute> attributes = new HashMap<>();
+        String line, tokens[];
+    
+        try {
+            InputStream inputStream = new FileInputStream(filename);
+            Reader reader = new InputStreamReader(inputStream);
+            BufferedReader bufferedReader = new BufferedReader(reader);
+            
+            while ((line = bufferedReader.readLine()) != null) {
+                tokens = line.split(",");
+                attributes.put(tokens[0], new Attribute(tokens[1]));
+            }
+            bufferedReader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return attributes;
+    }
+    
+    /**
+     * Reads a file and returns a list of searchables
+     * @param attributes Map of attributes in the system
+     * @param filename File name of the searchable data to load
+     * @return A list of searchables
+     */
+    public List<Searchable> loadFile(Map<String, Attribute> attributes, String filename) {
         List<Searchable> searchables = new ArrayList<>();
         String line, tokens[];
         
@@ -42,13 +76,10 @@ public class Loader {
             
             while ((line = bufferedReader.readLine()) != null) {
                 tokens = line.split(",");
-                
-                // Define the accepted searchables labels (token[0]) to load here with their relevant searchable
-                // class. It is assumed files are formatted correctly and attribute values are correct
-                switch (tokens[0]) {
-                    case "ANIMAL":
-                        searchables.add(createAnimal(tokens));
-                        break;
+                // For each pair, add the value to the relevant attribute
+                for (int i = 1 ; i < tokens.length; i++) {
+                    String[] attributePair = tokens[i].split(":");
+                    attributes.get(attributePair[0]).addValue(attributePair[1]);
                 }
             }
             bufferedReader.close();
@@ -56,13 +87,6 @@ public class Loader {
             e.printStackTrace();
         }
         return searchables;
-    }
-    
-    private Searchable createAnimal(String[] tokens) {
-        return new AnimalSearchable(tokens[1], Attributes.Legs.valueOf(tokens[2]),
-                Attributes.Wings.valueOf(tokens[3]), Attributes.Fly.valueOf(tokens[4]),
-                Attributes.Tail.valueOf(tokens[5]), Attributes.Nature.valueOf(tokens[6]),
-                Attributes.Habitat.valueOf(tokens[7]), Attributes.Active.valueOf(tokens[8]));
     }
     
 }

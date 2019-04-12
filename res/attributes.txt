@@ -1,7 +1,7 @@
-WINGS,
-FLY,
-TAIL,
-LEGS,
-ACTIVE,
-HABITAT,
-NATURE,
+WINGS,Does it have wings?
+FLY,Can it fly?
+TAIL,Does it have a tail?
+LEGS,How many legs does it have?
+ACTIVE,When is it active?
+HABITAT,Is it terrestrial or aquatic?
+NATURE,Is it domesticated or wild?
