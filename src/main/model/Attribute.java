@@ -11,12 +11,13 @@ public class Attribute implements Serializable {
     private String name;
     private String message;
     private List<String> values;
+    private final String UNKNOWN = "UNKNOWN";
     
     public Attribute(String name, String message) {
         this.name = name;
         this.message = message;
         this.values = new ArrayList<>();
-        values.add("UNKNOWN");
+        values.add(UNKNOWN);
     }
     
     // Adds a value to the attribute if it does not already exist
