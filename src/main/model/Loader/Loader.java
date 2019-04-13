@@ -9,48 +9,41 @@ import java.util.*;
 
 public class Loader {
     
-    @SuppressWarnings("unchecked")
-    public List<Searchable> loadSearchables(String filename) {
-        List<Searchable> searchables = null;
+    // Saves serialized objects to file
+    public <T> void saveFile(String filename, T write) {
         try {
-            ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename));
-            searchables = (List<Searchable>) ois.readObject();
-        } catch (IOException | ClassNotFoundException e) {
+            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename));
+            oos.writeObject(write);
+            oos.close();
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        return searchables;
     }
     
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked") // Unchecked cast, no way of checking if file contains Map<String, Attribute>
     public Map<String, Attribute> loadAttributes(String filename) {
         Map<String, Attribute> attributes = null;
         try {
             ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename));
             attributes = (Map<String, Attribute>) ois.readObject();
+            ois.close();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
         return attributes;
     }
     
-    // Tried to make this method generic ( Collection<T> ) but I discovered Map is not a collection,
-    // Decided to split into two methods instead
-    public void saveAttributeFile(String filename, Map<String, Attribute> write) {
+    @SuppressWarnings("unchecked") // Unchecked cast, no way of checking if file contains List<Searchable>
+    public List<Searchable> loadSearchables(String filename) {
+        List<Searchable> searchables = null;
         try {
-            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename));
-            oos.writeObject(write);
-        } catch (IOException e) {
+            ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename));
+            searchables = (List<Searchable>) ois.readObject();
+            ois.close();
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-    }
-    
-    public void saveDataFile(String filename, List<Searchable> write) {
-        try {
-            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename));
-            oos.writeObject(write);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        return searchables;
     }
     
     /**
@@ -58,7 +51,7 @@ public class Loader {
      * @param filename Filename of attributes
      * @return Map of attribute types
      */
-    public Map<String, Attribute> loadAttributesFile(String filename) {
+    public Map<String, Attribute> loadAttributeFile(String filename) {
         Map<String, Attribute> attributes = new LinkedHashMap<>();
         String line, tokens[];
     
@@ -85,7 +78,7 @@ public class Loader {
      * @param filename File name of the searchable data to load
      * @return A list of searchables
      */
-    public List<Searchable> loadFile(Map<String, Attribute> attributes, String filename) {
+    public List<Searchable> loadSearchableFile(Map<String, Attribute> attributes, String filename) {
         List<Searchable> searchables = new ArrayList<>();
         String line, tokens[];
         

@@ -1,55 +1,73 @@
-//package tests.model;
-//
-//import main.model.Attributes;
-//import main.model.Exceptions.NullAttributeException;
-//import main.model.Model;
-//import org.junit.jupiter.api.BeforeAll;
-//import org.junit.jupiter.api.DisplayName;
-//import org.junit.jupiter.api.Test;
-//
-//import java.util.ArrayList;
-//import java.util.List;
-//
-//import static org.junit.jupiter.api.Assertions.assertEquals;
-//import static org.junit.jupiter.api.Assertions.assertTrue;
-//import static org.junit.jupiter.api.Assertions.fail;
-//
-//@DisplayName("Model Test")
-//class ModelTest {
-//
-//    private static Model model;
-//    private static List<Enum> attributes;
-//
-//    @BeforeAll
-//    static void setup() {
-//        attributes = new ArrayList<>();
-//        model = new Model();
-//    }
-//
-//    private static void initializeSearchQuery() {
-//        attributes.add(Attributes.Legs.UNKNOWN);
-//        attributes.add(Attributes.Wings.UNKNOWN);
-//        attributes.add(Attributes.Fly.UNKNOWN);
-//        attributes.add(Attributes.Tail.YES);
-//        attributes.add(Attributes.Nature.WILD);
-//        attributes.add(Attributes.Habitat.AQUATIC);
-//        attributes.add(Attributes.Active.UNKNOWN);
-//    }
-//
-//    @Test
-//    @DisplayName("Model searchables should not be empty")
-//    void dataLoadedTest() {
-//        assertTrue(!model.getLoadedSearchables().isEmpty());
-//    }
-//
-//    @Test
-//    @DisplayName("Query result should be PENGUIN")
-//    void searchTest() {
-//        initializeSearchQuery();
-//        try {
-//            assertEquals(model.search(attributes), "PENGUIN");
-//        } catch (NullAttributeException e) {
-//            fail("Exception should not be thrown");
-//        }
-//    }
-//}
+package tests.model;
+
+import main.model.Exceptions.AttributeValueCountMismatchException;
+import main.model.Exceptions.NullAttributeException;
+import main.model.Searchable;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import tests.AbstractTestSetup;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+@DisplayName("Model Test")
+class ModelTest extends AbstractTestSetup {
+
+    private static List<String> owlSearch;
+
+    @BeforeAll
+    static void setup() {
+        owlSearch = new ArrayList<>();
+    }
+    
+    @BeforeEach
+    void setupEach() {
+        setupModelWithData();
+    }
+    
+    
+    // Create an OWL search query
+    private static void initializeOwlSearchQuery() {
+        owlSearch.clear();
+        owlSearch.add("YES"); // WINGS
+        owlSearch.add("YES"); // FLY
+        owlSearch.add("YES"); // TAIL
+        owlSearch.add("TWO"); // LEGS
+        owlSearch.add("NOCTURNAL"); // ACTIVE
+        owlSearch.add("TERRESTRIAL"); // HABITAT
+        owlSearch.add("WILD"); // NATURE
+    }
+
+    @Test
+    @DisplayName("Empty and populated tests for attributes and searchables")
+    void dataLoadedTest() {
+        assertFalse(model.getLoadedAttributes().isEmpty());
+        assertFalse(model.getLoadedSearchables().isEmpty());
+    }
+    
+    @Test
+    @DisplayName("Clear data test")
+    void clearDataTest() {
+        model.clearAttributes();
+        model.clearSearchables();
+        assertTrue(model.getLoadedAttributes().isEmpty());
+        assertTrue(model.getLoadedSearchables().isEmpty());
+    }
+    
+    @Test
+    @DisplayName("Query result should be OWL")
+    void searchTest() {
+        initializeOwlSearchQuery();
+        try {
+            Searchable searchable = model.search(owlSearch);
+            assertEquals(searchable.getName(), "OWL");
+        } catch (NullAttributeException | AttributeValueCountMismatchException e) {
+            fail("Exception should not be thrown");
+        }
+    }
+    
+}

@@ -31,19 +31,19 @@ public class Model {
     }
     
     public void saveAttributes() {
-        loader.saveAttributeFile(SAVE_ATTR_FILENAME, this.loadedAttributes);
+        loader.saveFile(SAVE_ATTR_FILENAME, this.loadedAttributes);
     }
     
     public void saveSearchables() {
-        loader.saveDataFile(SAVE_DATA_FILENAME, this.loadedSearchables);
+        loader.saveFile(SAVE_DATA_FILENAME, this.loadedSearchables);
     }
     
     public void loadAttributes(String path) {
-        this.loadedAttributes = loader.loadAttributesFile(path);
+        this.loadedAttributes = loader.loadAttributeFile(path);
     }
     
-    public void loadData(String path) {
-        this.loadedSearchables.addAll(loader.loadFile(loadedAttributes, path));
+    public void loadSearchables(String path) {
+        this.loadedSearchables.addAll(loader.loadSearchableFile(loadedAttributes, path));
     }
     
     public List<Searchable> getLoadedSearchables() {

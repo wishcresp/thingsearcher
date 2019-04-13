@@ -28,7 +28,6 @@ public class Controller implements Initializable {
     
     private Model model;
     private Stage stage;
-    // Dynamically  Generated ComboBoxes
     private List<ComboBox<String>> comboBoxes = new ArrayList<>();
     
     public void setModel(Model model, Stage stage) {
@@ -36,7 +35,7 @@ public class Controller implements Initializable {
         this.stage = stage;
     }
     
-    // Dynamically  Gridpane
+    // Dynamically populated GridPane
     private GridPane gridPane;
     
     @FXML // fx:id="menuLoadModel"
@@ -90,8 +89,9 @@ public class Controller implements Initializable {
         
         // Only load if attributes exist in the system
         if (!model.getLoadedAttributes().values().isEmpty()) {
+            // Maintain attributes in an ordered list for rendering to interface
             List<Attribute> attributes = new ArrayList<>(model.getLoadedAttributes().values());
-            // Render attribute message and ComboBoxes
+            // Render attribute message and values
             int length = attributes.size();
             for (int i = 0; i < length; i++) {
                 Attribute attribute = attributes.get(i);
@@ -127,7 +127,7 @@ public class Controller implements Initializable {
         if (!model.getLoadedAttributes().values().isEmpty()) {
             File file = loadFile();
             if (file != null) {
-                model.loadData(file.getPath());
+                model.loadSearchables(file.getPath());
                 refreshInterface();
             }
         } else {

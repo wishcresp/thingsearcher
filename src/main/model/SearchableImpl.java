@@ -6,6 +6,10 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Concrete implementation of the Searchable interface representing something that can be searched
+ * and has a name and a number of attributes
+ */
 public class SearchableImpl implements Searchable, Serializable {
     
     private Map<String, String> attributeValues;
@@ -28,17 +32,22 @@ public class SearchableImpl implements Searchable, Serializable {
     
     /**
      * Returns the number of matching attributeValues from a search result
-     * @param attributes List of Enum attributeValues
-     * @return The number of attribute matches indicating the desirability of the search result. Returns NO_MATCH if a
-     * non UNKNOWN attribute does not match.
+     * @param attributes List of attributes stored in the model (ordered list)
+     * @param searchValues List of String attribute values from search query (attribute ordering matches attributes)
+     * @return The number of matching attributes to this searchable indicating desirability of search result. Immediately
+     *      returns if a non matching attribute (not unknown) is found
+     * @throws AttributeValueCountMismatchException Sanity check, the View should never provide more attributes than is
+     *      stored in the model
      */
     @Override
-    public int getNumberOfMatches(List<Attribute> attributes, List<String> searchValues) throws AttributeValueCountMismatchException {
+    public int getNumberOfMatches(List<Attribute> attributes, List<String> searchValues)
+            throws AttributeValueCountMismatchException {
+        // Sanity check that attributes and searchValues are equal in size
         int numOfAttributes = attributes.size();
         if (numOfAttributes != searchValues.size()) {
-            System.out.println(attributes.size() + " " + searchValues.size());
-            throw new AttributeValueCountMismatchException("Error: This should not have happened. " +
-                    "Loaded Attributes and search values should have an equal count");
+            throw new AttributeValueCountMismatchException(
+                    "Error: Loaded Attributes and search values should have an equal count"
+            );
         }
         
         int numOfMatches = 0;
@@ -53,6 +62,7 @@ public class SearchableImpl implements Searchable, Serializable {
             boolean match = searchValue.equals(attributeValue);
             if (match) {
                 numOfMatches++;
+            // Return immediately if a non "UNKNOWN" non-match is found
             } else if (!searchValue.equals(UNKNOWN)) {
                 return NO_MATCH;
             }
