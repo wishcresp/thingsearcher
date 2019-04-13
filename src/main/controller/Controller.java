@@ -13,22 +13,21 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import main.model.Attribute;
-import main.model.Exceptions.AttributeValueCountMismatchException;
-import main.model.Exceptions.NullAttributeException;
+import main.model.SearchValue;
 import main.model.Model;
 import main.model.Searchable;
 
 import java.io.File;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class Controller implements Initializable {
     
     private Model model;
     private Stage stage;
     private List<ComboBox<String>> comboBoxes = new ArrayList<>();
+    // Store the names of attributes. Index of name corresponds to that of comboBoxes.
+    private List<String> attributeNames = new ArrayList<>();
     
     public void setModel(Model model, Stage stage) {
         this.model = model;
@@ -84,6 +83,7 @@ public class Controller implements Initializable {
     public void refreshInterface() {
         // Reset Interface
         comboBoxes.clear();
+        attributeNames.clear();
         resultField.clear();
         gridPane.getChildren().clear();
         
@@ -107,13 +107,15 @@ public class Controller implements Initializable {
                 comboBox.getSelectionModel().select(0);
                 comboBoxes.add(comboBox);
                 
+                attributeNames.add(attribute.getName());
+                
                 gridPane.add(label, 0, i + 1);
                 gridPane.add(comboBox, 1, i + 1);
             }
         }
     }
     
-    // Load the Attribute model from file when user presses menu item
+    // Load the SearchValue model from file when user presses menu item
     private void loadAttributeModelData() {
         File file = loadFile();
         if (file != null) {
@@ -131,7 +133,7 @@ public class Controller implements Initializable {
                 refreshInterface();
             }
         } else {
-            showErrorMessage("Error: Please load Attribute model file first");
+            showErrorMessage("Error: Please load SearchValue model file first");
         }
     }
     
@@ -156,18 +158,16 @@ public class Controller implements Initializable {
     // Perform a search using the ComboBox selections and set the TextField
     private void search() {
         // Build attribute values search query
-        List<String> attributes = new ArrayList<>();
-        for (ComboBox<String> comboBox : comboBoxes) {
-            attributes.add(comboBox.getSelectionModel().getSelectedItem());
+        List<SearchValue> attributeValues = new ArrayList<>();
+        int length = comboBoxes.size();
+        for (int i = 0; i < length; i++) {
+            String value = comboBoxes.get(i).getSelectionModel().getSelectedItem();
+            if (!value.equals(model.getDefaultValue())) {
+                attributeValues.add(new SearchValue(attributeNames.get(i), value));
+            }
         }
-        
-        // Show the result or an error message
-        try {
-            Searchable result = model.search(attributes);
-            resultField.setText(result != null ? result.getName() : "No matches were found.");
-        } catch (NullAttributeException | AttributeValueCountMismatchException e) {
-            showErrorMessage(e.getMessage());
-        }
+        Searchable result = model.search(attributeValues);
+        resultField.setText(result != null ? result.getName() : "No matches were found.");
     }
     
     // Show an error message to the user in a dialog

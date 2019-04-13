@@ -2,6 +2,7 @@ package tests.model;
 
 import main.model.Exceptions.AttributeValueCountMismatchException;
 import main.model.Exceptions.NullAttributeException;
+import main.model.SearchValue;
 import main.model.Searchable;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @DisplayName("Model Test")
 class ModelTest extends AbstractTestSetup {
 
-    private static List<String> owlSearch;
+    private static List<SearchValue> owlSearch;
 
     @BeforeAll
     static void setup() {
@@ -33,13 +34,13 @@ class ModelTest extends AbstractTestSetup {
     // Create an OWL search query
     private static void initializeOwlSearchQuery() {
         owlSearch.clear();
-        owlSearch.add("YES"); // WINGS
-        owlSearch.add("YES"); // FLY
-        owlSearch.add("YES"); // TAIL
-        owlSearch.add("TWO"); // LEGS
-        owlSearch.add("NOCTURNAL"); // ACTIVE
-        owlSearch.add("TERRESTRIAL"); // HABITAT
-        owlSearch.add("WILD"); // NATURE
+        owlSearch.add(new SearchValue("WINGS","YES"));
+        owlSearch.add(new SearchValue("FLY", "YES"));
+        owlSearch.add(new SearchValue("TAIL", "YES"));
+        owlSearch.add(new SearchValue("LEGS", "TWO"));
+        owlSearch.add(new SearchValue("ACTIVE", "NOCTURNAL"));
+        owlSearch.add(new SearchValue("HABITAT", "TERRESTRIAL"));
+        owlSearch.add(new SearchValue("NATURE","WILD"));
     }
 
     @Test
@@ -62,12 +63,8 @@ class ModelTest extends AbstractTestSetup {
     @DisplayName("Query result should be OWL")
     void searchTest() {
         initializeOwlSearchQuery();
-        try {
-            Searchable searchable = model.search(owlSearch);
-            assertEquals(searchable.getName(), "OWL");
-        } catch (NullAttributeException | AttributeValueCountMismatchException e) {
-            fail("Exception should not be thrown");
-        }
+        Searchable searchable = model.search(owlSearch);
+        assertEquals(searchable.getName(), "OWL");
     }
     
 }

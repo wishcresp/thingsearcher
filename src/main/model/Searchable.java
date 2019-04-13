@@ -1,19 +1,20 @@
 package main.model;
 
-import main.model.Exceptions.AttributeValueCountMismatchException;
-
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Something that can be searched for in the Model
+ */
 public interface Searchable {
     
-    String UNKNOWN = "UNKNOWN";
-    int NO_MATCH = 0;
-    
+    // Returns the name of the searchable
     String getName();
     
-    Map<String, String> getAttributeValues();
+    // Returns a list of a Searchable's attribute values
+    Map<String,String> getAttributeValues();
     
-    int getNumberOfMatches(List<Attribute> attributes, List<String> searchValues) throws AttributeValueCountMismatchException;
+    // For a given search query, return the number of matching attribute values
+    int getNumberOfMatches(List<SearchValue> searchValues);
     
 }

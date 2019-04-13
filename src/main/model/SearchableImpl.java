@@ -1,7 +1,5 @@
 package main.model;
 
-import main.model.Exceptions.AttributeValueCountMismatchException;
-
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
@@ -12,16 +10,18 @@ import java.util.Map;
  */
 public class SearchableImpl implements Searchable, Serializable {
     
-    private Map<String, String> attributeValues;
+    private static final long serialVersionUID = 1L;
+    
+    private Map<String,String> attributeValues;
     private final String name;
     
-    public SearchableImpl(String name, Map<String, String> attributes) {
+    public SearchableImpl(String name, Map<String, String> attributeValues) {
         this.name = name;
-        this.attributeValues = attributes;
+        this.attributeValues = attributeValues;
     }
     
     @Override
-    public Map<String, String> getAttributeValues() {
+    public Map<String,String> getAttributeValues() {
         return this.attributeValues;
     }
     
@@ -31,40 +31,24 @@ public class SearchableImpl implements Searchable, Serializable {
     }
     
     /**
-     * Returns the number of matching attributeValues from a search result
-     * @param attributes List of attributes stored in the model (ordered list)
-     * @param searchValues List of String attribute values from search query (attribute ordering matches attributes)
+     * Returns the number of matching attribute values for a search result
+     * @param searchValues List of AttributeValues from search query
      * @return The number of matching attributes to this searchable indicating desirability of search result. Immediately
-     *      returns if a non matching attribute (not unknown) is found
-     * @throws AttributeValueCountMismatchException Sanity check, the View should never provide more attributes than is
-     *      stored in the model
+     *      returns if a non matching attribute is found
      */
     @Override
-    public int getNumberOfMatches(List<Attribute> attributes, List<String> searchValues)
-            throws AttributeValueCountMismatchException {
-        // Sanity check that attributes and searchValues are equal in size
-        int numOfAttributes = attributes.size();
-        if (numOfAttributes != searchValues.size()) {
-            throw new AttributeValueCountMismatchException(
-                    "Error: Loaded Attributes and search values should have an equal count"
-            );
-        }
-        
+    public int getNumberOfMatches(List<SearchValue> searchValues) {
         int numOfMatches = 0;
-        // Compare each of the attributeValues
-        for (int i = 0; i < numOfAttributes; i++) {
-            // Attribute value searched for from the view
-            String searchValue = searchValues.get(i);
-            // This searchables attribute value
-            String attributeValue = attributeValues.get(attributes.get(i).getName());
-            
-            // Check if the search value matches the searchable's value
-            boolean match = searchValue.equals(attributeValue);
+        // Compare each of the attributes searched for
+        for (SearchValue searchValue : searchValues) {
+            String key = searchValue.getName();
+            String value = searchValue.getValue();
+            boolean match = this.attributeValues.get(key).equals(value);
             if (match) {
                 numOfMatches++;
-            // Return immediately if a non "UNKNOWN" non-match is found
-            } else if (!searchValue.equals(UNKNOWN)) {
-                return NO_MATCH;
+            // Not a match
+            } else {
+                return 0;
             }
         }
         return numOfMatches;

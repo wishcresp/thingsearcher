@@ -1,7 +1,7 @@
 package tests.model;
 
 import main.model.Attribute;
-import main.model.Exceptions.AttributeValueCountMismatchException;
+import main.model.SearchValue;
 import main.model.Searchable;
 import main.model.SearchableImpl;
 import org.junit.jupiter.api.BeforeAll;
@@ -10,12 +10,11 @@ import org.junit.jupiter.api.Test;
 import tests.AbstractTestSetup;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
 
 public class SearchableImplTest extends AbstractTestSetup {
     
@@ -24,16 +23,12 @@ public class SearchableImplTest extends AbstractTestSetup {
     private static String name;
     private static Map<String, String> attributeValues;
     
-    // Attributes stored in Model
-    private static List<Attribute> attributeList;
-    
     // Search query values from view
-    private static List<String> searchValues;
+    private static List<SearchValue> searchValues;
     
     @BeforeAll
     static void setup() {
         setupModelWithData();
-        attributeList = new ArrayList<>(model.getLoadedAttributes().values());
         searchValues = new ArrayList<>();
         constructExampleSearchable();
     }
@@ -41,7 +36,7 @@ public class SearchableImplTest extends AbstractTestSetup {
     // Creates a searchable
     private static void constructExampleSearchable() {
         name = "HUMAN";
-        attributeValues = new LinkedHashMap<>();
+        attributeValues = new HashMap<>();
         attributeValues.put("LEGS", "TWO");
         attributeValues.put("WINGS", "NO");
         attributeValues.put("FLY", "NO");
@@ -67,70 +62,38 @@ public class SearchableImplTest extends AbstractTestSetup {
     @Test
     @DisplayName("Single match")
     void getNumberOfMatchesSingleTest() {
-        // Construct search query for single matching attribute "LEGS"
         searchValues.clear();
-        listAdder(searchValues, UNKNOWN, 3);
-        searchValues.add("TWO");
-        listAdder(searchValues, UNKNOWN, 3);
-    
-        checkNumberOfMatches(1);
+        searchValues.add(new SearchValue("LEGS", "TWO"));
+        assertEquals(1, searchable.getNumberOfMatches(searchValues));
     }
     
     @Test
-    @DisplayName("Three matches")
+    @DisplayName("Four matches")
     void getNumberOfMatchesMultipleTest () {
         // Construct search query for single matching attribute "LEGS"
         searchValues.clear();
-        listAdder(searchValues, UNKNOWN, 3);
-        searchValues.add("TWO");
-        searchValues.add("DIURNAL");
-        searchValues.add("TERRESTRIAL");
-        searchValues.add("DOMESTICATED");
-        
-        checkNumberOfMatches(4);
+        searchValues.add(new SearchValue("LEGS", "TWO"));
+        searchValues.add(new SearchValue("ACTIVE", "DIURNAL"));
+        searchValues.add(new SearchValue("HABITAT", "TERRESTRIAL"));
+        searchValues.add(new SearchValue("NATURE","DOMESTICATED"));
+        assertEquals(4, searchable.getNumberOfMatches(searchValues));
     }
     
     @Test
-    @DisplayName("No matches all unknown")
+    @DisplayName("No matches: Empty Query")
     void getNumberOfMatchesNoMatchTest() {
         searchValues.clear();
-        listAdder(searchValues, UNKNOWN, 7);
-        
-        checkNumberOfMatches(0);
+        assertEquals(0, searchable.getNumberOfMatches(searchValues));
     }
     
     @Test
-    @DisplayName("Matching value but un-matching non-unknown value.")
-    void getNumberOfMatchesNoMatchNonUnknownTest() {
+    @DisplayName("Un-matching value")
+    void getNumberOfMatchesNonMatch() {
         searchValues.clear();
-        listAdder(searchValues, UNKNOWN, 5);
-        searchValues.add("TERRESTRIAL"); // Matches
-        searchValues.add("DIURNAL"); // Does not match
-        
-        checkNumberOfMatches(0);
-    }
+        searchValues.add(new SearchValue("HABITAT", "TERRESTRIAL")); // Matches
+        searchValues.add(new SearchValue("ACTIVE", "NOCTURNAL")); // Does not match
     
-    
-    @Test
-    @DisplayName("Throws AttributeValueCountMismatchException")
-    void getNumberOfMatchesException () {
-    
-    }
-    
-    // Helper method for checking for the expected number of matches
-    private void checkNumberOfMatches(int expectedMatches) {
-        try {
-            assertEquals(searchable.getNumberOfMatches(attributeList, searchValues), expectedMatches);
-        } catch (AttributeValueCountMismatchException e) {
-            fail("Should not throw exception here");
-        }
-    }
-    
-    // Helper method to add values to a list
-    private <T> void listAdder(List<T> list, T value, int times) {
-        for (int i = 0; i < times; i++) {
-            list.add(value);
-        }
+        assertEquals(0, searchable.getNumberOfMatches(searchValues));
     }
     
 }

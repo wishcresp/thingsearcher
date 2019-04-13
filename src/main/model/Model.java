@@ -1,7 +1,5 @@
 package main.model;
 
-import main.model.Exceptions.AttributeValueCountMismatchException;
-import main.model.Exceptions.NullAttributeException;
 import main.model.Loader.Loader;
 
 import java.util.ArrayList;
@@ -14,6 +12,7 @@ public class Model {
     private Loader loader;
     private final String SAVE_ATTR_FILENAME = "res/attributes.bin";
     private final String SAVE_DATA_FILENAME = "res/searchables.bin";
+    private final String UNKNOWN = "UNKNOWN";
     private Map<String, Attribute> loadedAttributes;
     private List<Searchable> loadedSearchables;
     
@@ -66,20 +65,14 @@ public class Model {
      * Returns a matching searchable
      * @param searchValues Map of attribute values of a search query
      * @return Searchable match or null if no match found
-     * @throws NullAttributeException A supplied attribute was null
      */
-    public Searchable search(List<String> searchValues) throws NullAttributeException, AttributeValueCountMismatchException {
-        // Check for null values in search
-        if (searchValues.contains(null)) {
-            throw new NullAttributeException("Error: A provided attribute was null");
-        }
-        
+    public Searchable search(List<SearchValue> searchValues) {
         Searchable searchResult = null;
         int maxAttributeMatches = 0;
         // Compare query with each searchable
         for (Searchable searchable : this.loadedSearchables) {
-            int attributeMatchCount = searchable.getNumberOfMatches(new ArrayList<>(this.loadedAttributes.values()), searchValues);
-            // Check if more of a match than previous matches (NO_MATCH = 0 so is never considered)
+            int attributeMatchCount = searchable.getNumberOfMatches(searchValues);
+            // Check if more of a match than previous matches
             if (attributeMatchCount > maxAttributeMatches) {
                 searchResult = searchable;
                 maxAttributeMatches = attributeMatchCount;
@@ -87,5 +80,9 @@ public class Model {
         }
         // Return a searchable if found
         return searchResult;
+    }
+    
+    public String getDefaultValue() {
+        return this.UNKNOWN;
     }
 }
