@@ -28,6 +28,7 @@ public class Controller implements Initializable {
     
     private Model model;
     private Stage stage;
+    // Dynamically  Generated ComboBoxes
     private List<ComboBox<String>> comboBoxes = new ArrayList<>();
     
     public void setModel(Model model, Stage stage) {
@@ -35,8 +36,8 @@ public class Controller implements Initializable {
         this.stage = stage;
     }
     
+    // Dynamically  Gridpane
     private GridPane gridPane;
-    
     
     @FXML // fx:id="menuLoadModel"
     private MenuItem menuLoadModel;
@@ -62,17 +63,17 @@ public class Controller implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Setup GridPane
-        int pad = 5;
+        int padding = 5;
         gridPane = new GridPane();
-        gridPane.setHgap(pad);
-        gridPane.setVgap(pad);
-        gridPane.setPadding(new Insets(pad,pad,pad,pad));
+        gridPane.setHgap(padding);
+        gridPane.setVgap(padding);
+        gridPane.setPadding(new Insets(padding,padding,padding,padding));
         ColumnConstraints constraints = new ColumnConstraints();
         constraints.setPercentWidth(50);
         gridPane.getColumnConstraints().addAll(constraints, constraints);
         borderPane.setCenter(gridPane);
         
-        // User selects file to load
+        // Actions
         menuLoadModel.setOnAction(event -> loadAttributeModelData());
         menuLoadData.setOnAction(event -> loadDataFile());
         menuReset.setOnAction(event -> refreshInterface());
@@ -82,14 +83,15 @@ public class Controller implements Initializable {
     
     // Clears the GridPane and fields for reconstruction
     public void refreshInterface() {
-        // Reset
+        // Reset Interface
         comboBoxes.clear();
         resultField.clear();
         gridPane.getChildren().clear();
         
+        // Only load if attributes exist in the system
         if (!model.getLoadedAttributes().values().isEmpty()) {
             List<Attribute> attributes = new ArrayList<>(model.getLoadedAttributes().values());
-    
+            // Render attribute message and ComboBoxes
             int length = attributes.size();
             for (int i = 0; i < length; i++) {
                 Attribute attribute = attributes.get(i);
@@ -104,13 +106,14 @@ public class Controller implements Initializable {
                 comboBox.setItems(FXCollections.observableList(attribute.getValues()));
                 comboBox.getSelectionModel().select(0);
                 comboBoxes.add(comboBox);
-    
+                
                 gridPane.add(label, 0, i + 1);
                 gridPane.add(comboBox, 1, i + 1);
             }
         }
     }
     
+    // Load the Attribute model from file when user presses menu item
     private void loadAttributeModelData() {
         File file = loadFile();
         if (file != null) {
@@ -119,11 +122,16 @@ public class Controller implements Initializable {
         }
     }
     
+    // Load Searchables from file when user presses menu item
     private void loadDataFile() {
-        File file = loadFile();
-        if (file != null) {
-            model.loadData(file.getPath());
-            refreshInterface();
+        if (!model.getLoadedAttributes().values().isEmpty()) {
+            File file = loadFile();
+            if (file != null) {
+                model.loadData(file.getPath());
+                refreshInterface();
+            }
+        } else {
+            showErrorMessage("Error: Please load Attribute model file first");
         }
     }
     
@@ -138,14 +146,14 @@ public class Controller implements Initializable {
         return fileChooser.showOpenDialog(stage);
     }
     
-    // Deletes all searchable data from the system
+    // Clears all Attributes and Searchables from the system
     private void deleteAllData() {
         model.clearAttributes();
         model.clearSearchables();
         refreshInterface();
     }
     
-    // Main search function when search button is pressed
+    // Perform a search using the ComboBox selections and set the TextField
     private void search() {
         // Build attribute values search query
         List<String> attributes = new ArrayList<>();
@@ -158,9 +166,14 @@ public class Controller implements Initializable {
             Searchable result = model.search(attributes);
             resultField.setText(result != null ? result.getName() : "No matches were found.");
         } catch (NullAttributeException | AttributeValueCountMismatchException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.CLOSE);
-            alert.showAndWait();
+            showErrorMessage(e.getMessage());
         }
+    }
+    
+    // Show an error message to the user in a dialog
+    private void showErrorMessage(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR, message, ButtonType.CLOSE);
+        alert.showAndWait();
     }
     
 }
