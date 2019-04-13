@@ -121,6 +121,11 @@ public class Controller implements Initializable {
         if (file != null) {
             model.loadAttributes(file.getPath());
             refreshInterface();
+            // Check if an error occurred when loading
+            if(model.getErrorFlag()) {
+                showErrorMessage(model.getLoadErrorMessage());
+                model.setErrorFlag(false);
+            }
         }
     }
     
@@ -131,6 +136,11 @@ public class Controller implements Initializable {
             if (file != null) {
                 model.loadSearchables(file.getPath());
                 refreshInterface();
+                // Check if an error occurred when loading
+                if(model.getErrorFlag()) {
+                    showErrorMessage(model.getLoadErrorMessage());
+                    model.setErrorFlag(false);
+                }
             }
         } else {
             showErrorMessage("Error: Please load SearchValue model file first");

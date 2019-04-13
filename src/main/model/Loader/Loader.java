@@ -1,12 +1,19 @@
 package main.model.Loader;
 
 import main.model.Attribute;
+import main.model.Model;
 import main.model.Searchable;
 import main.model.SearchableImpl;
 import java.io.*;
 import java.util.*;
 
 public class Loader {
+    
+    private final Model model;
+    
+    public Loader(Model model) {
+        this.model = model;
+    }
     
     // Saves serialized objects to file
     public <T> void saveFile(String filename, T write) {
@@ -61,6 +68,13 @@ public class Loader {
             
             while ((line = bufferedReader.readLine()) != null) {
                 tokens = line.split(",");
+                
+                // Skip line if there is not two tokens
+                if (tokens.length != 2) {
+                    model.setErrorFlag(true);
+                    continue;
+                }
+                
                 Attribute attribute = new Attribute(tokens[0], tokens[1]);
                 attributes.put(tokens[0], attribute);
             }
@@ -92,6 +106,15 @@ public class Loader {
                 // For each pair, add the value to the relevant attribute
                 for (int i = 1 ; i < tokens.length; i++) {
                     String[] attributePair = tokens[i].split(":");
+                    Attribute attribute = attributes.get(attributePair);
+                    
+                    // Skip the current attribute if attribute name cannot be found
+                    // or the length of the current attributePair is not two
+                    if (attribute == null || attributePair.length != 2) {
+                        model.setErrorFlag(true);
+                        continue;
+                    }
+                    
                     attributes.get(attributePair[0]).addValue(attributePair[1]);
                     attributeValues.put(attributePair[0], attributePair[1]);
                 }

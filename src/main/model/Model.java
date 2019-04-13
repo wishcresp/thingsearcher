@@ -13,11 +13,14 @@ public class Model {
     private final String SAVE_ATTR_FILENAME = "res/attributes.bin";
     private final String SAVE_DATA_FILENAME = "res/searchables.bin";
     private final String UNKNOWN = "UNKNOWN";
+    private final String LOAD_ERROR_MESSAGE = "Incorrectly formatted file. Some data was not loaded";
+    private boolean LOAD_ERROR_FLAG = false;
     private Map<String, Attribute> loadedAttributes;
     private List<Searchable> loadedSearchables;
     
+    
     public Model() {
-        loader = new Loader();
+        loader = new Loader(this);
         this.loadedSearchables = loader.loadSearchables(SAVE_DATA_FILENAME);
         this.loadedAttributes = loader.loadAttributes(SAVE_ATTR_FILENAME);
         // Check if searchables and attributes were successfully loaded
@@ -84,5 +87,17 @@ public class Model {
     
     public String getDefaultValue() {
         return this.UNKNOWN;
+    }
+    
+    public boolean setErrorFlag(boolean flag) {
+        return this.LOAD_ERROR_FLAG = flag;
+    }
+    
+    public boolean getErrorFlag() {
+        return this.LOAD_ERROR_FLAG;
+    }
+    
+    public String getLoadErrorMessage() {
+        return this.LOAD_ERROR_MESSAGE;
     }
 }

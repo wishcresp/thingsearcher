@@ -21,7 +21,7 @@ class LoaderTest extends AbstractTestSetup {
     @BeforeAll
     static void setup() {
         setupModelNoData();
-        loader = new Loader();
+        loader = new Loader(model);
     }
     
     private static String [] attributes = {"WINGS", "FLY", "TAIL", "LEGS", "ACTIVE", "HABITAT", "NATURE"};
