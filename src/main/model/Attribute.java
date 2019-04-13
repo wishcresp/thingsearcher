@@ -3,14 +3,17 @@ package main.model;
 import java.io.Serializable;
 import java.util.*;
 
+/**
+ * Defines all the values and a message for each attribute in the Model
+ */
 public class Attribute implements Serializable {
     
-    private String key;
+    private String name;
     private String message;
     private List<String> values;
     
-    public Attribute(String key, String message) {
-        this.key = key;
+    public Attribute(String name, String message) {
+        this.name = name;
         this.message = message;
         this.values = new ArrayList<>();
         values.add("UNKNOWN");
@@ -27,8 +30,8 @@ public class Attribute implements Serializable {
         return this.values;
     }
     
-    public String getKey() {
-        return this.key;
+    public String getName() {
+        return this.name;
     }
     
     public String getMessage() {

@@ -56,7 +56,7 @@ public class SearchableImpl implements Searchable, Serializable {
             // Attribute value searched for from the view
             String searchValue = searchValues.get(i);
             // This searchables attribute value
-            String attributeValue = attributeValues.get(attributes.get(i).getKey());
+            String attributeValue = attributeValues.get(attributes.get(i).getName());
             
             // Check if the search value matches the searchable's value
             boolean match = searchValue.equals(attributeValue);
