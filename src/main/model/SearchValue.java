@@ -21,6 +21,10 @@ public class SearchValue {
         return value;
     }
     
+    /**
+     * Called in drop down ComboBoxes in view
+     * @return Attribute value
+     */
     @Override
     public String toString() {
         return this.value;
