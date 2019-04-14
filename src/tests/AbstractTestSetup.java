@@ -8,9 +8,10 @@ import main.model.Model;
 public abstract class AbstractTestSetup {
     
     // Constant file names
-    protected static final String LOAD_ATTRIBUTE_TEXT_PATH = "res/testdata/testattributes.txt";
-    protected static final String LOAD_SEARCHABLE_TEXT_PATH = "res/testdata/testanimals.txt";
-    protected static final String SAVE_FILE_BIN_PATH = "res/testdata/test.bin";
+    protected static final String RES_PATH = "res";
+    protected static final String LOAD_ATTRIBUTE_TEXT_PATH = RES_PATH + "/testdata/testattributes.txt";
+    protected static final String LOAD_SEARCHABLE_TEXT_PATH = RES_PATH + "/testdata/testanimals.txt";
+    protected static final String SAVE_FILE_BIN_PATH = RES_PATH + "/testdata/test.bin";
     
     protected static Model model;
     

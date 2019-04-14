@@ -57,7 +57,7 @@ class LoaderTest extends AbstractTestSetup {
     @DisplayName("Test saving bin files")
     void saveLoadBinTest() {
         String save = "testvalue";
-        loader.saveFile(SAVE_FILE_BIN_PATH, save);
+        loader.saveFile(RES_PATH, SAVE_FILE_BIN_PATH, save);
         File file = new File(SAVE_FILE_BIN_PATH);
         assertTrue(file.exists());
         assertTrue(file.delete());

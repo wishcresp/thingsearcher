@@ -2,13 +2,15 @@ package main.model;
 
 import main.model.Loader.Loader;
 
+import java.io.File;
 import java.util.*;
 
 public class Model {
     
     // Constants
-    private static final String SAVE_ATTRIBUTE_FILE_PATH = "res/attributes.bin";
-    private static final String SAVE_DATA_FILE_PATH = "res/searchables.bin";
+    private static final String RES_PATH = "res";
+    private static final String SAVE_ATTRIBUTE_FILE_PATH = RES_PATH + "/attributes.bin";
+    private static final String SAVE_DATA_FILE_PATH = RES_PATH + "/searchables.bin";
     private static final String DEFAULT_ATTRIBUTE_VALUE = "UNKNOWN"; // Used by Loader and Controller
     
     // Separate file loader class
@@ -39,14 +41,14 @@ public class Model {
      * Save binary attribute file
      */
     public void saveAttributes() {
-        loader.saveFile(SAVE_ATTRIBUTE_FILE_PATH, this.loadedAttributes);
+        loader.saveFile(RES_PATH, SAVE_ATTRIBUTE_FILE_PATH, this.loadedAttributes);
     }
     
     /**
      * Save binary searchable file
       */
     public void saveSearchables() {
-        loader.saveFile(SAVE_DATA_FILE_PATH, this.loadedSearchables);
+        loader.saveFile(RES_PATH, SAVE_DATA_FILE_PATH, this.loadedSearchables);
     }
     
     /**

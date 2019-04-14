@@ -19,9 +19,14 @@ public class Loader {
     }
     
     // Saves serialized objects to file
-    public <T> void saveFile(String filename, T write) {
+    public <T> void saveFile(String resPath, String path, T write) {
         try {
-            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename));
+            File directory = new File(resPath);
+            if (!directory.exists()) {
+                directory.mkdir();
+            }
+            
+            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(path));
             oos.writeObject(write);
             oos.close();
         } catch (IOException e) {
