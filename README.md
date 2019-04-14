@@ -26,3 +26,23 @@ Each line in the file represents a new attribute to be imported. The first token
 Each line represents a thing with a number of attributes that can be searched. The first token is the name of the thing. It can be followed by any number of attribute value pairs separated by comma's. The attribute value pairs are delimited with colons. The attribute name must exactly match the name in the Attribute model text file.
 
 If a line has bad formatting, file loading will continue but the attribute or searchable will be skipped.
+
+## Program Structure
+
+####View
+* ThingSearcher.fxml - View components are linked to the controller with id's
+
+####Controller
+* Controller.java - Links the model to the view, dynamically populates the view with attributes and values
+
+####Model
+
+* Model.java - Stores the loaded data, save/load file methods and main search function
+* Searchable/SearchableImpl.java - Models something that can be searched; has a name and many attributes.
+* Attribute.java - Models an attribute; has a name and many values
+* SearchValue.java - Used during a search query; has an attribute name and value
+* Loader.java - File loading/saving class managed by Model
+
+![Model class diagram](img/model.PNG?raw=true)
+
+
