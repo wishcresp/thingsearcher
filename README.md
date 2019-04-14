@@ -29,13 +29,13 @@ If a line has bad formatting, file loading will continue but the attribute or se
 
 ## Program Structure
 
-####View
+#### View
 * ThingSearcher.fxml - View components are linked to the controller with id's
 
-####Controller
+#### Controller
 * Controller.java - Links the model to the view, dynamically populates the view with attributes and values
 
-####Model
+#### Model
 
 * Model.java - Stores the loaded data, save/load file methods and main search function
 * Searchable/SearchableImpl.java - Models something that can be searched; has a name and many attributes.
