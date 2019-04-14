@@ -21,21 +21,21 @@ import java.io.File;
 import java.net.URL;
 import java.util.*;
 
+/**
+ * Controller links to IntegradevSearcher.fxml
+ * Handles interaction with the view
+ */
 public class Controller implements Initializable {
+    
+    private static final String LOAD_ERROR_MESSAGE = "Incorrectly formatted file. Some data was not loaded";
+
+    private List<ComboBox<SearchValue>> comboBoxes = new ArrayList<>();
     
     private Model model;
     private Stage stage;
-    private List<ComboBox<String>> comboBoxes = new ArrayList<>();
-    // Store the names of attributes. Index of name corresponds to that of comboBoxes.
-    private List<String> attributeNames = new ArrayList<>();
     
-    public void setModel(Model model, Stage stage) {
-        this.model = model;
-        this.stage = stage;
-    }
-    
-    // Dynamically populated GridPane
-    private GridPane gridPane;
+    // GridPane populated with Attributes and Searchables
+    private GridPane attributePane;
     
     @FXML // fx:id="menuLoadModel"
     private MenuItem menuLoadModel;
@@ -62,14 +62,14 @@ public class Controller implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         // Setup GridPane
         int padding = 5;
-        gridPane = new GridPane();
-        gridPane.setHgap(padding);
-        gridPane.setVgap(padding);
-        gridPane.setPadding(new Insets(padding,padding,padding,padding));
+        attributePane = new GridPane();
+        attributePane.setHgap(padding);
+        attributePane.setVgap(padding);
+        attributePane.setPadding(new Insets(padding,padding,padding,padding));
         ColumnConstraints constraints = new ColumnConstraints();
         constraints.setPercentWidth(50);
-        gridPane.getColumnConstraints().addAll(constraints, constraints);
-        borderPane.setCenter(gridPane);
+        attributePane.getColumnConstraints().addAll(constraints, constraints);
+        borderPane.setCenter(attributePane);
         
         // Actions
         menuLoadModel.setOnAction(event -> loadAttributeModelData());
@@ -79,78 +79,101 @@ public class Controller implements Initializable {
         searchButton.setOnAction(event -> search());
     }
     
-    // Clears the GridPane and fields for reconstruction
+    /**
+     * Set the references to the model and stage
+     * @param model Model containing Searchable and Attribute data
+     * @param stage Main JavaFX stage. Used for showing dialog error messages
+     */
+    public void setModel(Model model, Stage stage) {
+        this.model = model;
+        this.stage = stage;
+    }
+    
+    /**
+     * Clears the GridPane and fields for reconstruction. Called when files are loaded and data model changes.
+     */
     public void refreshInterface() {
         // Reset Interface
         comboBoxes.clear();
-        attributeNames.clear();
         resultField.clear();
-        gridPane.getChildren().clear();
+        attributePane.getChildren().clear();
         
         // Only load if attributes exist in the system
         if (!model.getLoadedAttributes().values().isEmpty()) {
             // Maintain attributes in an ordered list for rendering to interface
-            List<Attribute> attributes = new ArrayList<>(model.getLoadedAttributes().values());
+            Collection<Attribute> attributes = model.getLoadedAttributes().values();
             // Render attribute message and values
-            int length = attributes.size();
-            for (int i = 0; i < length; i++) {
-                Attribute attribute = attributes.get(i);
-    
+            int count = 0;
+            for (Attribute attribute : attributes) {
                 Label label = new Label();
                 label.setText(attribute.getMessage());
                 label.setAlignment(Pos.CENTER_RIGHT);
                 GridPane.setHalignment(label, HPos.RIGHT);
-    
-                ComboBox<String> comboBox = new ComboBox<>();
+                
+                ComboBox<SearchValue> comboBox = new ComboBox<>();
                 comboBox.setPrefWidth(150);
-                comboBox.setItems(FXCollections.observableList(attribute.getValues()));
+                
+                // Create SearchValues for the attribute
+                final List<SearchValue> values = new ArrayList<>();
+                for (String value : attribute.getValues()) {
+                    values.add(new SearchValue(attribute.getName(), value));
+                }
+                
+                comboBox.setItems(FXCollections.observableList(values));
                 comboBox.getSelectionModel().select(0);
                 comboBoxes.add(comboBox);
                 
-                attributeNames.add(attribute.getName());
-                
-                gridPane.add(label, 0, i + 1);
-                gridPane.add(comboBox, 1, i + 1);
+                attributePane.add(label, 0, count + 1);
+                attributePane.add(comboBox, 1, count + 1);
+                count++;
             }
         }
     }
     
-    // Load the SearchValue model from file when user presses menu item
+    /**
+     * Load the SearchValue model from file when user selects menu item
+     */
     private void loadAttributeModelData() {
-        File file = loadFile();
+        File file = loadFile("Open attribute model file");
         if (file != null) {
             model.loadAttributes(file.getPath());
             refreshInterface();
             // Check if an error occurred when loading
-            if(model.getErrorFlag()) {
-                showErrorMessage(model.getLoadErrorMessage());
+            if (model.getErrorFlag()) {
+                showErrorMessage(LOAD_ERROR_MESSAGE);
                 model.setErrorFlag(false);
             }
         }
     }
     
-    // Load Searchables from file when user presses menu item
+    /**
+     * Load Searchables from file when user selects menu item
+     */
     private void loadDataFile() {
         if (!model.getLoadedAttributes().values().isEmpty()) {
-            File file = loadFile();
+            File file = loadFile("Open searchable data file");
             if (file != null) {
                 model.loadSearchables(file.getPath());
                 refreshInterface();
                 // Check if an error occurred when loading
-                if(model.getErrorFlag()) {
-                    showErrorMessage(model.getLoadErrorMessage());
+                if (model.getErrorFlag()) {
+                    showErrorMessage(LOAD_ERROR_MESSAGE);
                     model.setErrorFlag(false);
                 }
             }
         } else {
-            showErrorMessage("Error: Please load SearchValue model file first");
+            showErrorMessage("Error: Please load attribute model file first");
         }
     }
     
-    // Prompts the user to select a file to load
-    private File loadFile() {
+    /**
+     * Prompts the user to select a file to load
+     * @param message Instructional string to display in window
+     * @return The selected File
+     */
+    private File loadFile(String message) {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open data file");
+        fileChooser.setTitle(message);
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Text file", "*.txt"),
                 new FileChooser.ExtensionFilter("All files", "*.*")
@@ -158,31 +181,40 @@ public class Controller implements Initializable {
         return fileChooser.showOpenDialog(stage);
     }
     
-    // Clears all Attributes and Searchables from the system
+    /**
+     * Clears all Attributes and Searchables from the model
+     */
     private void deleteAllData() {
         model.clearAttributes();
         model.clearSearchables();
         refreshInterface();
     }
     
-    // Perform a search using the ComboBox selections and set the TextField
+    /**
+     * Get the SearchValues from the ComboBoxes and perform a search.
+     * Set the TextField with the result.
+     */
     private void search() {
         // Build attribute values search query
-        List<SearchValue> attributeValues = new ArrayList<>();
-        int length = comboBoxes.size();
-        for (int i = 0; i < length; i++) {
-            String value = comboBoxes.get(i).getSelectionModel().getSelectedItem();
-            if (!value.equals(model.getDefaultValue())) {
-                attributeValues.add(new SearchValue(attributeNames.get(i), value));
+        final List<SearchValue> attributeValues = new ArrayList<>();
+        // Get SearchValue from each ComboBox
+        for (ComboBox<SearchValue> comboBox : comboBoxes) {
+            final SearchValue searchValue = comboBox.getSelectionModel().getSelectedItem();
+            // Ignore SearchValue if value is the default attribute value
+            if (!searchValue.getValue().equals(model.getDefaultAttributeValue())) {
+                attributeValues.add(searchValue);
             }
         }
-        Searchable result = model.search(attributeValues);
+        final Searchable result = model.search(attributeValues);
         resultField.setText(result != null ? result.getName() : "No matches were found.");
     }
     
-    // Show an error message to the user in a dialog
+    /**
+     * Show an error message to the user in a dialog
+     * @param message Message to display
+     */
     private void showErrorMessage(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR, message, ButtonType.CLOSE);
+        final Alert alert = new Alert(Alert.AlertType.ERROR, message, ButtonType.CLOSE);
         alert.showAndWait();
     }
     

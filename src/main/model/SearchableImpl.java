@@ -12,8 +12,8 @@ public class SearchableImpl implements Searchable, Serializable {
     
     private static final long serialVersionUID = 1L;
     
-    private Map<String,String> attributeValues;
-    private final String name;
+    private final String name;  // Name of the searchable
+    private final Map<String,String> attributeValues; // Map of attribute values (key = attribute name)
     
     public SearchableImpl(String name, Map<String, String> attributeValues) {
         this.name = name;
@@ -30,20 +30,14 @@ public class SearchableImpl implements Searchable, Serializable {
         return this.name;
     }
     
-    /**
-     * Returns the number of matching attribute values for a search result
-     * @param searchValues List of AttributeValues from search query
-     * @return The number of matching attributes to this searchable indicating desirability of search result. Immediately
-     *      returns if a non matching attribute is found
-     */
     @Override
     public int getNumberOfMatches(List<SearchValue> searchValues) {
         int numOfMatches = 0;
         // Compare each of the attributes searched for
         for (SearchValue searchValue : searchValues) {
-            String key = searchValue.getName();
-            String value = searchValue.getValue();
-            boolean match = this.attributeValues.get(key).equals(value);
+            final String key = searchValue.getName();
+            final String value = searchValue.getValue();
+            final boolean match = this.attributeValues.get(key).equals(value);
             if (match) {
                 numOfMatches++;
             // Not a match

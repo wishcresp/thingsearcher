@@ -1,7 +1,5 @@
 package tests.model;
 
-import main.model.Exceptions.AttributeValueCountMismatchException;
-import main.model.Exceptions.NullAttributeException;
 import main.model.SearchValue;
 import main.model.Searchable;
 import org.junit.jupiter.api.BeforeAll;
@@ -31,7 +29,9 @@ class ModelTest extends AbstractTestSetup {
     }
     
     
-    // Create an OWL search query
+    /**
+     * Create a search query for an owl
+     */
     private static void initializeOwlSearchQuery() {
         owlSearch.clear();
         owlSearch.add(new SearchValue("WINGS","YES"));

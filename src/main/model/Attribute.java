@@ -10,19 +10,22 @@ public class Attribute implements Serializable {
     
     private static final long serialVersionUID = 1L;
     
-    private String name;
-    private String message;
-    private List<String> values;
-    private final String UNKNOWN = "UNKNOWN";
+    private final String name; // Attribute name
+    private final String message; // Question/Message to show in the view
+    private final List<String> values; // List of possible attribute values
     
-    public Attribute(String name, String message) {
+    public Attribute(String name, String message, String defaultAttributeValue) {
         this.name = name;
         this.message = message;
         this.values = new ArrayList<>();
-        values.add(UNKNOWN);
+        // Add a default value
+        values.add(defaultAttributeValue);
     }
     
-    // Adds a value to the attribute if it does not already exist
+    /**
+     * Add a non existing value to the attribute
+     * @param value attribute value
+     */
     public void addValue(String value) {
         if (!this.values.contains(value)) {
             this.values.add(value);

@@ -4,17 +4,29 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Something that can be searched for in the Model
+ * Represents Something that can be searched for in the Model
  */
 public interface Searchable {
     
-    // Returns the name of the searchable
+    /**
+     * Return the name of the searchable
+     * @return searchable name
+     */
     String getName();
     
-    // Returns a list of a Searchable's attribute values
+    /**
+     * Returns a map of a Searchables attribute values
+     * (key = attribute name)
+     * @return map of attribute values
+     */
     Map<String,String> getAttributeValues();
     
-    // For a given search query, return the number of matching attribute values
+    /**
+     * Returns the number of matching attribute values for a search query
+     * @param searchValues List of attribute values from search query
+     * @return The number of matching attributes to this searchable indicating desirability of search result.
+     * Immediately returns 0 if a non matching attribute is found
+     */
     int getNumberOfMatches(List<SearchValue> searchValues);
     
 }

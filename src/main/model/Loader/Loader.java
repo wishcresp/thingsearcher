@@ -7,6 +7,9 @@ import main.model.SearchableImpl;
 import java.io.*;
 import java.util.*;
 
+/**
+ * Load and save data to files
+ */
 public class Loader {
     
     private final Model model;
@@ -53,12 +56,12 @@ public class Loader {
     }
     
     /**
-     * Load attribute model from file into a LinkedHashMap
+     * Load attribute model from file into a HashMap
      * @param filename Filename of attributes
      * @return Map of attribute types
      */
     public Map<String, Attribute> loadAttributeFile(String filename) {
-        Map<String, Attribute> attributes = new LinkedHashMap<>();
+        Map<String, Attribute> attributes = new HashMap<>();
         String line, tokens[];
     
         try {
@@ -75,7 +78,7 @@ public class Loader {
                     continue;
                 }
                 
-                Attribute attribute = new Attribute(tokens[0], tokens[1]);
+                Attribute attribute = new Attribute(tokens[0], tokens[1], model.getDefaultAttributeValue());
                 attributes.put(tokens[0], attribute);
             }
             bufferedReader.close();
@@ -106,7 +109,7 @@ public class Loader {
                 // For each pair, add the value to the relevant attribute
                 for (int i = 1 ; i < tokens.length; i++) {
                     String[] attributePair = tokens[i].split(":");
-                    Attribute attribute = attributes.get(attributePair);
+                    Attribute attribute = attributes.get(attributePair[0]);
                     
                     // Skip the current attribute if attribute name cannot be found
                     // or the length of the current attributePair is not two

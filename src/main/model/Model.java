@@ -2,72 +2,103 @@ package main.model;
 
 import main.model.Loader.Loader;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Model {
     
-    private Loader loader;
-    private final String SAVE_ATTR_FILENAME = "res/attributes.bin";
-    private final String SAVE_DATA_FILENAME = "res/searchables.bin";
-    private final String UNKNOWN = "UNKNOWN";
-    private final String LOAD_ERROR_MESSAGE = "Incorrectly formatted file. Some data was not loaded";
-    private boolean LOAD_ERROR_FLAG = false;
-    private Map<String, Attribute> loadedAttributes;
-    private List<Searchable> loadedSearchables;
+    // Constants
+    private static final String SAVE_ATTRIBUTE_FILE_PATH = "res/attributes.bin";
+    private static final String SAVE_DATA_FILE_PATH = "res/searchables.bin";
+    private static final String DEFAULT_ATTRIBUTE_VALUE = "UNKNOWN"; // Used by Loader and Controller
     
+    // Separate file loader class
+    private final Loader loader;
+    
+    // Map of Attributes loaded from attribute file. Key is the name of the Attribute
+    private Map<String, Attribute> loadedAttributes;
+    // List of searchables loaded from searchables file
+    private List<Searchable> loadedSearchables;
+    // Flag indicating some data wasn't loaded due to an incorrectly formatted file
+    private boolean loadErrorFlag = false;
     
     public Model() {
         loader = new Loader(this);
-        this.loadedSearchables = loader.loadSearchables(SAVE_DATA_FILENAME);
-        this.loadedAttributes = loader.loadAttributes(SAVE_ATTR_FILENAME);
+        // Load existing binary data if it exists
+        this.loadedSearchables = loader.loadSearchables(SAVE_DATA_FILE_PATH);
+        this.loadedAttributes = loader.loadAttributes(SAVE_ATTRIBUTE_FILE_PATH);
         // Check if searchables and attributes were successfully loaded
         if (this.loadedAttributes == null) {
-            this.loadedAttributes = new LinkedHashMap<>();
+            this.loadedAttributes = new HashMap<>();
         }
         if (this.loadedSearchables == null) {
             this.loadedSearchables = new ArrayList<>();
         }
     }
     
+    /**
+     * Save binary attribute file
+     */
     public void saveAttributes() {
-        loader.saveFile(SAVE_ATTR_FILENAME, this.loadedAttributes);
+        loader.saveFile(SAVE_ATTRIBUTE_FILE_PATH, this.loadedAttributes);
     }
     
+    /**
+     * Save binary searchable file
+      */
     public void saveSearchables() {
-        loader.saveFile(SAVE_DATA_FILENAME, this.loadedSearchables);
+        loader.saveFile(SAVE_DATA_FILE_PATH, this.loadedSearchables);
     }
     
+    /**
+     * Load attribute text file
+     * @param path file path
+     */
     public void loadAttributes(String path) {
         this.loadedAttributes = loader.loadAttributeFile(path);
     }
     
+    /**
+     * Load searchable text file
+     * @param path file path
+     */
     public void loadSearchables(String path) {
         this.loadedSearchables.addAll(loader.loadSearchableFile(loadedAttributes, path));
     }
     
+    /**
+     * Return all searchables in model
+     * @return List of searchables
+     */
     public List<Searchable> getLoadedSearchables() {
         return this.loadedSearchables;
     }
     
+    /**
+     * Return map of all attributes in model
+     * @return Map of Attributes (key = attribute name)
+     */
     public Map<String,Attribute> getLoadedAttributes() {
         return this.loadedAttributes;
     }
     
+    /**
+     * Clear all searchables from the model
+     */
     public void clearSearchables() {
         this.loadedSearchables.clear();
     }
     
+    /**
+     * Clear all attributes from the model
+     */
     public void clearAttributes() {
         this.loadedAttributes.clear();
     }
     
     /**
-     * Returns a matching searchable
-     * @param searchValues Map of attribute values of a search query
-     * @return Searchable match or null if no match found
+     * Return a searchable for a search query
+     * @param searchValues Search query - list of attribute values
+     * @return Searchable match or null if no match is found
      */
     public Searchable search(List<SearchValue> searchValues) {
         Searchable searchResult = null;
@@ -75,7 +106,7 @@ public class Model {
         // Compare query with each searchable
         for (Searchable searchable : this.loadedSearchables) {
             int attributeMatchCount = searchable.getNumberOfMatches(searchValues);
-            // Check if more of a match than previous matches
+            // Check if more attribute values match than previous matches
             if (attributeMatchCount > maxAttributeMatches) {
                 searchResult = searchable;
                 maxAttributeMatches = attributeMatchCount;
@@ -85,19 +116,28 @@ public class Model {
         return searchResult;
     }
     
-    public String getDefaultValue() {
-        return this.UNKNOWN;
+    /**
+     * Return the default
+     * @return Default attribute value to display in the view
+     */
+    public String getDefaultAttributeValue() {
+        return DEFAULT_ATTRIBUTE_VALUE;
     }
     
-    public boolean setErrorFlag(boolean flag) {
-        return this.LOAD_ERROR_FLAG = flag;
+    /**
+     * Sets a flag indicating if an error occurred during file loading causing some data to be ignored
+     * @param flag Error flag
+     */
+    public void setErrorFlag(boolean flag) {
+        this.loadErrorFlag = flag;
     }
     
+    /**
+     * Check the file load error flag
+     * @return True if there was an error loading a file
+     */
     public boolean getErrorFlag() {
-        return this.LOAD_ERROR_FLAG;
+        return this.loadErrorFlag;
     }
     
-    public String getLoadErrorMessage() {
-        return this.LOAD_ERROR_MESSAGE;
-    }
 }
