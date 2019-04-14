@@ -1,55 +1,70 @@
 package tests.model;
 
-import main.model.Attributes;
-import main.model.Exceptions.NullAttributeException;
-import main.model.Model;
+import main.model.SearchValue;
+import main.model.Searchable;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import tests.AbstractTestSetup;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Model Test")
-class ModelTest {
-    
-    private static Model model;
-    private static List<Enum> attributes;
-    
+class ModelTest extends AbstractTestSetup {
+
+    private static List<SearchValue> owlSearch;
+
     @BeforeAll
     static void setup() {
-        attributes = new ArrayList<>();
-        model = new Model();
+        owlSearch = new ArrayList<>();
     }
     
-    private static void initializeSearchQuery() {
-        attributes.add(Attributes.Legs.UNKNOWN);
-        attributes.add(Attributes.Wings.UNKNOWN);
-        attributes.add(Attributes.Fly.UNKNOWN);
-        attributes.add(Attributes.Tail.YES);
-        attributes.add(Attributes.Nature.WILD);
-        attributes.add(Attributes.Habitat.AQUATIC);
-        attributes.add(Attributes.Active.UNKNOWN);
+    @BeforeEach
+    void setupEach() {
+        setupModelWithData();
     }
     
+    
+    /**
+     * Create a search query for an owl
+     */
+    private static void initializeOwlSearchQuery() {
+        owlSearch.clear();
+        owlSearch.add(new SearchValue("WINGS","YES"));
+        owlSearch.add(new SearchValue("FLY", "YES"));
+        owlSearch.add(new SearchValue("TAIL", "YES"));
+        owlSearch.add(new SearchValue("LEGS", "TWO"));
+        owlSearch.add(new SearchValue("ACTIVE", "NOCTURNAL"));
+        owlSearch.add(new SearchValue("HABITAT", "TERRESTRIAL"));
+        owlSearch.add(new SearchValue("NATURE","WILD"));
+    }
+
     @Test
-    @DisplayName("Model searchables should not be empty")
+    @DisplayName("Empty and populated tests for attributes and searchables")
     void dataLoadedTest() {
-        assertTrue(!model.getSearchables().isEmpty());
+        assertFalse(model.getLoadedAttributes().isEmpty());
+        assertFalse(model.getLoadedSearchables().isEmpty());
     }
     
     @Test
-    @DisplayName("Query result should be PENGUIN")
-    void searchTest() {
-        initializeSearchQuery();
-        try {
-            assertEquals(model.search(attributes), "PENGUIN");
-        } catch (NullAttributeException e) {
-            fail("Exception should not be thrown");
-        }
+    @DisplayName("Clear data test")
+    void clearDataTest() {
+        model.clearAttributes();
+        model.clearSearchables();
+        assertTrue(model.getLoadedAttributes().isEmpty());
+        assertTrue(model.getLoadedSearchables().isEmpty());
     }
+    
+    @Test
+    @DisplayName("Query result should be OWL")
+    void searchTest() {
+        initializeOwlSearchQuery();
+        Searchable searchable = model.search(owlSearch);
+        assertEquals(searchable.getName(), "OWL");
+    }
+    
 }

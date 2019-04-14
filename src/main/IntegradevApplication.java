@@ -1,4 +1,4 @@
-package main.view;
+package main;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -11,18 +11,24 @@ import main.model.Model;
 
 public class IntegradevApplication extends Application {
     
-    private static Model model;
+    private static final Model model = new Model();
     
     @Override
     public void start(Stage stage) throws Exception{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("layouts/IntegradevSearcher.fxml"));
-        Parent root = loader.load();
-        Controller controller = loader.getController();
+        final FXMLLoader loader = new FXMLLoader(getClass().getResource("/main/view/layouts/IntegradevSearcher.fxml"));
+        final Parent root = loader.load();
+        final Controller controller = loader.getController();
+        
+        // Set the model and refresh the interface in case data was loaded
         controller.setModel(model, stage);
+        controller.refreshInterface();
+        
         stage.setTitle("Integradev Interview Application");
         stage.setScene(new Scene(root));
         
+        // Save before exit
         stage.setOnCloseRequest(event -> {
+            model.saveAttributes();
             model.saveSearchables();
             Platform.exit();
             System.exit(0);
@@ -32,7 +38,6 @@ public class IntegradevApplication extends Application {
     }
     
     public static void main(String[] args) {
-        model = new Model();
         launch(args);
     }
 }
