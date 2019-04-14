@@ -14,7 +14,7 @@
     </MenuBar>
     <BorderPane fx:id="borderPane">
         <top>
-          <Label text="IntegraDev - Animal Searcher by Sean Martin" BorderPane.alignment="CENTER">
+          <Label text="ThingSearcher by Sean Martin" BorderPane.alignment="CENTER">
               <font>
                   <Font name="System Bold Italic" size="18.0" />
               </font>

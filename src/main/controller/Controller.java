@@ -22,7 +22,7 @@ import java.net.URL;
 import java.util.*;
 
 /**
- * Controller links to IntegradevSearcher.fxml
+ * Controller links to ThingSearcher.fxml
  * Handles interaction with the view
  */
 public class Controller implements Initializable {

@@ -9,13 +9,13 @@ import javafx.stage.Stage;
 import main.controller.Controller;
 import main.model.Model;
 
-public class IntegradevApplication extends Application {
+public class ThingSearcherApplication extends Application {
     
     private static final Model model = new Model();
     
     @Override
     public void start(Stage stage) throws Exception{
-        final FXMLLoader loader = new FXMLLoader(getClass().getResource("/main/view/layouts/IntegradevSearcher.fxml"));
+        final FXMLLoader loader = new FXMLLoader(getClass().getResource("/main/view/layouts/ThingSearcher.fxml"));
         final Parent root = loader.load();
         final Controller controller = loader.getController();
         
@@ -23,7 +23,7 @@ public class IntegradevApplication extends Application {
         controller.setModel(model, stage);
         controller.refreshInterface();
         
-        stage.setTitle("Integradev Interview Application");
+        stage.setTitle("ThingSearcher Application");
         stage.setScene(new Scene(root));
         
         // Save before exit
